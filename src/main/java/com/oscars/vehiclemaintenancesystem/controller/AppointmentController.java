@@ -85,7 +85,7 @@ public class AppointmentController {
         Appointment selectedAppointment = appointmentTable.getSelectionModel().getSelectedItem();
         if (selectedAppointment != null) {
             try {
-                appointmentService.cancelAppointment(selectedAppointment.getAppointmentId());
+                appointmentService.deleteAppointment(selectedAppointment.getAppointmentId());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Appointment cancelled successfully");
                 alert.showAndWait();
                 loadAppointments();

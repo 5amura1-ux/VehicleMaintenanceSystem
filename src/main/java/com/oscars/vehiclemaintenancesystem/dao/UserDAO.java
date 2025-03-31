@@ -66,15 +66,39 @@ public class UserDAO {
         }
     }
 
-    public User getUserByUsername(String username) {
+    public List<User> getUserByUsername(String username) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
-            session.byId(User.class).load(username);
-            tx.commit();
+            return session.createQuery("FROM User WHERE username = :username", User.class)
+                    .setParameter("username", username)
+                    .list();
         }
-        return user;
     }
 
-    public void updateUserProfile(String userId, String firstName, String lastName, String email, String newPassword) {
+    public User updateUserProfile(String userId, String text, String text1, String text2, String newPassword) {
+            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+                Transaction tx = session.beginTransaction();
+                User user = session.byId(User.class).load(userId);
+                user.setFirstName(text);
+                user.setLastName(text1);
+                user.setEmail(text2);
+                if (newPassword != null) {
+                    user.setPassword(newPassword);
+                }
+                session.update(user);
+                tx.commit();
+                return user;
+            }
     }
+
+//    public User getUserByUsername(String username) {
+//        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+//            Transaction tx = session.beginTransaction();
+//            session.byId(User.class).load(username);
+//            tx.commit();
+//        }
+//        return user;
+//    }
+//
+//    public void updateUserProfile(String userId, String firstName, String lastName, String email, String newPassword) {
+//    }
 }

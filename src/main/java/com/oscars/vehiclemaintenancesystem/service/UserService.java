@@ -16,7 +16,7 @@ public class UserService {
         userDAO.deactivateUser(userId);
     }
 
-    public void updateUser(User user) throws Exception {
+        public void updateUser(User user) throws Exception {
         userDAO.updateUser(user);
     }
 
@@ -28,13 +28,21 @@ public class UserService {
         return userDAO.getAllUsers();
     }
 
-    // Add method to get a user by username
-    public User getUserByUsername(String username) throws Exception {
-        return userDAO.getUserByUsername(username);
+    public User getUserByUsername(String Username) {
+        return (User) userDAO.getUserByUsername(Username);
     }
 
-    // Add method to update a user's profile
-    public void updateUserProfile(String userId, String firstName, String lastName, String email, String newPassword) throws Exception {
-        userDAO.updateUserProfile(userId, firstName, lastName, email, newPassword);
+    public User updateUserProfile(String userId, String text, String text1, String text2, String newPassword) {
+        return userDAO.updateUserProfile(userId, text, text1, text2, newPassword);
     }
+
+    // Add method to get a user by username
+//    public User getUserByUsername(String username) throws Exception {
+//        return userDAO.getUserByUsername(username);
+//    }
+//
+//    // Add method to update a user's profile
+//    public void updateUserProfile(String userId, String firstName, String lastName, String email, String newPassword) throws Exception {
+//        userDAO.updateUserProfile(userId, firstName, lastName, email, newPassword);
+//    }
 }

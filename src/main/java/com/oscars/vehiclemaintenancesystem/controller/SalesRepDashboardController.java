@@ -1,5 +1,6 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import com.oscars.vehiclemaintenancesystem.model.Payment;
 import com.oscars.vehiclemaintenancesystem.service.AppointmentService;
 import com.oscars.vehiclemaintenancesystem.service.CustomerService;
 import com.oscars.vehiclemaintenancesystem.service.PaymentService;

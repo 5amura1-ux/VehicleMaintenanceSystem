@@ -112,6 +112,13 @@ public class LoginController {
         alert.setContentText("This application is a vehicle maintenance and service management system. It allows users to manage vehicles, maintenance schedules, and service requests. The system has three user roles: Admin, Mechanic, and Sales Representative. Each role has different permissions and capabilities.");
         alert.showAndWait();
     }
+//    public void getLoggedInUser(ActionEvent actionEvent) {
+//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//        alert.setTitle("Logged In User");
+//        alert.setHeaderText("Logged In User");
+//        alert.setContentText("The logged in user is: " + loggedInUser);
+//        alert.showAndWait();
+//    }
 
 
 }
