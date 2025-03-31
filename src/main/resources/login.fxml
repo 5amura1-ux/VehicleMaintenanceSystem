@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.oscars.vehiclemaintenancesystem.ui.LoginController"
+            fx:controller="com.oscars.vehiclemaintenancesystem.controller.LoginController"
             prefWidth="900" prefHeight="650" styleClass="root">
 
     <!-- Top: Menu Bar and Header -->
@@ -49,7 +49,7 @@
                     <Label text="Password" styleClass="form-label" />
                     <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field" />
                 </VBox>
-                <Button fx:id="loginButton" text="Login" onAction="#handleLogin" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" styleClass="primary-button" />
+                <Button fx:id="loginButton" text="Login" onAction="#Login" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" styleClass="primary-button" />
                 <Label fx:id="errorLabel" text="" visible="false" styleClass="error-label" />
             </VBox>
         </VBox>

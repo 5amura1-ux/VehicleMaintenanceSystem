@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.MechanicDashboardController">
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Button text="🏠 Dashboard" onAction="#showDashboard" style="-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <!-- Mechanic Menu -->
+            <Button text="📅 Appointments" onAction="#showAppointmentView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🔧 Mechanic Availability" onAction="#showMechanicAvailabilityView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="📝 Feedback" onAction="#showCustomerFeedbackView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="📋 Vehicle Checklist" onAction="#showVehicleChecklistView" style="-fx-pref-width: 150;-fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🚪 Logout" onAction="#logout" style="-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;"/>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
+            <Label fx:id="welcomeLabel" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
+            <Label fx:id="totalAppointmentsLabel" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+        </VBox>
+    </center>
+</BorderPane>

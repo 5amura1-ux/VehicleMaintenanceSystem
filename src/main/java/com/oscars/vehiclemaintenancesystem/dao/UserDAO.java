@@ -1,75 +1,80 @@
 package com.oscars.vehiclemaintenancesystem.dao;
 
-import com.oscars.vehiclemaintenancesystem.entity.User;
 import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
+import com.oscars.vehiclemaintenancesystem.model.User;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Types;
 import java.util.List;
 
-public interface UserDAO {
-    void addUser(User user);
-    User getUser(String userId);
-    List<User> getAllUsers();
-    void updateUser(User user);
-    void deleteUser(String userId);
-
-    // Implementation
-    class Impl implements UserDAO {
-        @Override
-        public void addUser(User user) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.save(user);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+public class UserDAO {
+    public String insertUser(String username, String password, String roleId, String firstName, String lastName, String email) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call INSERT_USER(?,?,?,?,?,?,?)}");
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            stmt.setString(3, roleId);
+            stmt.setString(4, firstName);
+            stmt.setString(5, lastName);
+            stmt.setString(6, email);
+            stmt.registerOutParameter(7, Types.VARCHAR);
+            stmt.execute();
+            String userId = stmt.getString(7);
+            tx.commit();
+            return userId;
         }
+    }
 
-        @Override
-        public User getUser(String userId) {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                return session.get(User.class, userId);
-            }
+    public void deactivateUser(String userId) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call MAKE_THE_USER_INACTIVE(?)}");
+            stmt.setString(1, userId);
+            stmt.execute();
+            tx.commit();
         }
+    }
 
-        @Override
-        public List<User> getAllUsers() {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Query<User> query = session.createQuery("FROM User", User.class);
-                return query.list();
-            }
+    public void updateUser(User user) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.update(user);
+            tx.commit();
         }
+    }
 
-        @Override
-        public void updateUser(User user) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.update(user);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
-        }
 
-        @Override
-        public void deleteUser(String userId) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                User user = session.get(User.class, userId);
-                if (user != null) session.delete(user);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+    public List<User> getUsersByRole(String roleId) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM User WHERE roleId = :roleId", User.class)
+                    .setParameter("roleId", roleId)
+                    .list();
         }
+    }
+
+    public List<User> getAllUsers() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM User", User.class).list();
+        }
+    }
+
+    public User getUserByUsername(String username) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.byId(User.class).load(username);
+            tx.commit();
+        }
+        return user;
+    }
+
+    public void updateUserProfile(String userId, String firstName, String lastName, String email, String newPassword) {
     }
 }

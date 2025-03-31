@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.RoleManagementController">
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <Button text="🏠 Dashboard" onAction="#showDashboard" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="👥 Customers" onAction="#showCustomerView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🚗 Vehicles" onAction="#showVehicleView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="📅 Appointments" onAction="#showAppointmentView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="💳 Payments" onAction="#showPaymentView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="📦 Inventory" onAction="#showInventoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="👤 Users" onAction="#showUserView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🔔 Notifications" onAction="#showNotificationView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="⚙️ Services" onAction="#showServiceManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🔑 Roles" onAction="#showRoleManagementView" style="-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="📜 Audit Log" onAction="#showAuditLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="❗ Error Log" onAction="#showErrorLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🔍 Customer Search" onAction="#showCustomerSearchView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🔍 Vehicle Search" onAction="#showVehicleSearchView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="📅 Appointment History" onAction="#showAppointmentHistoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="💳 Payment History" onAction="#showPaymentHistoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="📊 Inventory Report" onAction="#showInventoryReportView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="👤 Profile" onAction="#showUserProfileView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
+            <Button text="🚪 Logout" onAction="#logout" style="-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;"/>
+        </VBox>
+    </left>
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
+            <Label text="🔑 Role Management" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
+            <GridPane hgap="10" vgap="10">
+                <Label text="Role Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                <TextField fx:id="roleNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+            </GridPane>
+            <HBox spacing="10">
+                <Button text="➕ Add Role" onAction="#addRole" style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
+                <Button text="✏️ Update Role" onAction="#updateRole" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
+                <Button text="🗑️ Delete Role" onAction="#deleteRole" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;"/>
+            </HBox>
+            <TableView fx:id="roleTable" style="-fx-pref-height: 300;">
+                <columns>
+                    <TableColumn text="Role ID" fx:id="roleIdColumn" style="-fx-alignment: CENTER;"/>
+                    <TableColumn text="Role Name" fx:id="roleNameColumn" style="-fx-alignment: CENTER;"/>
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+</BorderPane>

@@ -1,75 +1,62 @@
 package com.oscars.vehiclemaintenancesystem.dao;
 
-import com.oscars.vehiclemaintenancesystem.entity.Inventory;
 import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
+import com.oscars.vehiclemaintenancesystem.model.InventoryItem;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Types;
 import java.util.List;
 
-public interface InventoryDAO {
-    void addInventory(Inventory inventory);
-    Inventory getInventory(String itemId);
-    List<Inventory> getAllInventory();
-    void updateInventory(Inventory inventory);
-    void deleteInventory(String itemId);
-
-    // Implementation
-    class Impl implements InventoryDAO {
-        @Override
-        public void addInventory(Inventory inventory) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.save(inventory);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+public class InventoryDAO {
+    public String insertInventory(String itemName, int quantity, int lowStockThreshold, double unitPrice) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call INSERT_INVENTORY(?,?,?,?,?)}");
+            stmt.setString(1, itemName);
+            stmt.setInt(2, quantity);
+            stmt.setInt(3, lowStockThreshold);
+            stmt.setDouble(4, unitPrice);
+            stmt.registerOutParameter(5, Types.VARCHAR);
+            stmt.execute();
+            String itemId = stmt.getString(5);
+            tx.commit();
+            return itemId;
         }
+    }
 
-        @Override
-        public Inventory getInventory(String itemId) {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                return session.get(Inventory.class, itemId);
-            }
+    public void updateInventory(String itemId, int quantity) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call UPDATE_INVENTORY(?,?)}");
+            stmt.setString(1, itemId);
+            stmt.setInt(2, quantity);
+            stmt.execute();
+            tx.commit();
         }
+    }
 
-        @Override
-        public List<Inventory> getAllInventory() {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Query<Inventory> query = session.createQuery("FROM Inventory", Inventory.class);
-                return query.list();
-            }
+    public void deleteInventory(String itemId) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call DELETE_INVENTORY(?)}");
+            stmt.setString(1, itemId);
+            stmt.execute();
+            tx.commit();
         }
+    }
 
-        @Override
-        public void updateInventory(Inventory inventory) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.update(inventory);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
-        }
-
-        @Override
-        public void deleteInventory(String itemId) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                Inventory inventory = session.get(Inventory.class, itemId);
-                if (inventory != null) session.delete(inventory);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+    public List<InventoryItem> getAllInventoryItems() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM InventoryItem", InventoryItem.class).list();
         }
     }
 }

@@ -1,75 +1,66 @@
 package com.oscars.vehiclemaintenancesystem.dao;
 
-import com.oscars.vehiclemaintenancesystem.entity.Appointment;
 import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
+import com.oscars.vehiclemaintenancesystem.model.Appointment;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Types;
+import java.util.Date;
 import java.util.List;
 
-public interface AppointmentDAO {
-    void addAppointment(Appointment appointment);
-    Appointment getAppointment(String appointmentId);
-    List<Appointment> getAllAppointments();
-    void updateAppointment(Appointment appointment);
-    void deleteAppointment(String appointmentId);
-
-    // Implementation
-    class Impl implements AppointmentDAO {
-        @Override
-        public void addAppointment(Appointment appointment) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.save(appointment);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+public class AppointmentDAO {
+    public String insertAppointment(String vehicleId, String serviceId, String packageId, String mechanicId, Date appointmentDate, String notes) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call INSERT_APPOINTMENT(?,?,?,?,?,?,?)}");
+            stmt.setString(1, vehicleId);
+            stmt.setString(2, serviceId);
+            stmt.setString(3, packageId);
+            stmt.setString(4, mechanicId);
+            stmt.setDate(5, new java.sql.Date(appointmentDate.getTime()));
+            stmt.setString(6, notes);
+            stmt.registerOutParameter(7, Types.VARCHAR);
+            stmt.execute();
+            String appointmentId = stmt.getString(7);
+            tx.commit();
+            return appointmentId;
         }
+    }
 
-        @Override
-        public Appointment getAppointment(String appointmentId) {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                return session.get(Appointment.class, appointmentId);
-            }
+    public void deleteAppointment(String appointmentId) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call DELETE_APPOINTMENT_SERVICE(?)}");
+            stmt.setString(1, appointmentId);
+            stmt.execute();
+            tx.commit();
         }
+    }
 
-        @Override
-        public List<Appointment> getAllAppointments() {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Query<Appointment> query = session.createQuery("FROM Appointment", Appointment.class);
-                return query.list();
-            }
+    public Appointment getAppointmentById(String appointmentId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Appointment.class, appointmentId);
         }
+    }
 
-        @Override
-        public void updateAppointment(Appointment appointment) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.update(appointment);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+    public List<Appointment> getAllAppointments() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Appointment", Appointment.class).list();
         }
+    }
 
-        @Override
-        public void deleteAppointment(String appointmentId) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                Appointment appointment = session.get(Appointment.class, appointmentId);
-                if (appointment != null) session.delete(appointment);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+    public List<Appointment> getAppointmentsByMechanic(String mechanicId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Appointment WHERE mechanicId = :mechanicId", Appointment.class)
+                    .setParameter("mechanicId", mechanicId)
+                    .list();
         }
     }
 }

@@ -1,75 +1,66 @@
 package com.oscars.vehiclemaintenancesystem.dao;
 
-import com.oscars.vehiclemaintenancesystem.entity.Vehicle;
 import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
+import com.oscars.vehiclemaintenancesystem.model.Vehicle;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Types;
 import java.util.List;
 
-public interface VehicleDAO {
-    void addVehicle(Vehicle vehicle);
-    Vehicle getVehicle(String vehicleId);
-    List<Vehicle> getAllVehicles();
-    void updateVehicle(Vehicle vehicle);
-    void deleteVehicle(String vehicleId);
-
-    // Implementation
-    class Impl implements VehicleDAO {
-        @Override
-        public void addVehicle(Vehicle vehicle) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.save(vehicle);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+public class VehicleDAO {
+    public String insertVehicle(String customerId, String vin, String make, String model, int year, String licensePlate, String color) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call INSERT_VEHICLE(?,?,?,?,?,?,?,?)}");
+            stmt.setString(1, customerId);
+            stmt.setString(2, vin);
+            stmt.setString(3, make);
+            stmt.setString(4, model);
+            stmt.setInt(5, year);
+            stmt.setString(6, licensePlate);
+            stmt.setString(7, color);
+            stmt.registerOutParameter(8, Types.VARCHAR);
+            stmt.execute();
+            String vehicleId = stmt.getString(8);
+            tx.commit();
+            return vehicleId;
         }
+    }
 
-        @Override
-        public Vehicle getVehicle(String vehicleId) {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                return session.get(Vehicle.class, vehicleId);
-            }
+    public void deleteVehicle(String vehicleId) throws Exception {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            Connection conn = session.getSessionFactory().getSessionFactoryOptions().getServiceRegistry()
+                    .getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class).getConnection();
+            CallableStatement stmt = conn.prepareCall("{call DELETE_VEHICLE(?)}");
+            stmt.setString(1, vehicleId);
+            stmt.execute();
+            tx.commit();
         }
+    }
 
-        @Override
-        public List<Vehicle> getAllVehicles() {
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                Query<Vehicle> query = session.createQuery("FROM Vehicle", Vehicle.class);
-                return query.list();
-            }
+    public Vehicle getVehicleById(String vehicleId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Vehicle.class, vehicleId);
         }
+    }
 
-        @Override
-        public void updateVehicle(Vehicle vehicle) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                session.update(vehicle);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+    public List<Vehicle> getVehiclesByCustomer(String customerId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Vehicle WHERE customerId = :customerId", Vehicle.class)
+                    .setParameter("customerId", customerId)
+                    .list();
         }
+    }
 
-        @Override
-        public void deleteVehicle(String vehicleId) {
-            Transaction transaction = null;
-            try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-                transaction = session.beginTransaction();
-                Vehicle vehicle = session.get(Vehicle.class, vehicleId);
-                if (vehicle != null) session.delete(vehicle);
-                transaction.commit();
-            } catch (Exception e) {
-                if (transaction != null) transaction.rollback();
-                throw e;
-            }
+    public List<Vehicle> getAllVehicles() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.createQuery("FROM Vehicle", Vehicle.class).list();
         }
     }
 }
