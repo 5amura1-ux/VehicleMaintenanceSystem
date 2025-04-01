@@ -5,6 +5,7 @@ import com.oscars.vehiclemaintenancesystem.service.AppointmentService;
 import com.oscars.vehiclemaintenancesystem.service.CustomerService;
 import com.oscars.vehiclemaintenancesystem.service.PaymentService;
 import com.oscars.vehiclemaintenancesystem.service.VehicleService;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -163,5 +164,15 @@ public class AdminDashboardController {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
         Stage stage = (Stage) welcomeLabel.getScene().getWindow();
         stage.setScene(new Scene(root));
+    }
+
+    @FXML
+    public void showCustomerSearchView() throws IOException {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
+            loadView("CustomerSearchView.fxml");
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
+            alert.showAndWait();
+        }
     }
 }

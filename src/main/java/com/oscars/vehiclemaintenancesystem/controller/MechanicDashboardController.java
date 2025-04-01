@@ -19,7 +19,7 @@ public class MechanicDashboardController {
     @FXML
     public void initialize() {
         // Check role-based access (only Mechanics can access this view)
-        if (!"Mechanic".equals(LoginController.getLoggedInUserRole())) {
+        if (!"ROLE00003".equals(LoginController.getLoggedInUserRole())) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Mechanics can access this view");
             alert.showAndWait();
             try {
@@ -32,7 +32,7 @@ public class MechanicDashboardController {
                         fxmlFile = "SalesRepDashboard.fxml";
                         break;
                     default:
-                        fxmlFile = "LoginView.fxml";
+                        fxmlFile = "Login.fxml"; // Corrected to match the actual file name
                 }
                 loadView(fxmlFile);
             } catch (IOException e) {
@@ -78,7 +78,8 @@ public class MechanicDashboardController {
     @FXML
     public void logout() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+            
+            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml")); // Corrected to match the actual file name
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
