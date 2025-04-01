@@ -128,13 +128,13 @@ public class InventoryController {
     public void showDashboard() throws IOException {
         String fxmlFile;
         switch (LoginController.getLoggedInUserRole()) {
-            case "Admin":
+            case "ROLE00004":
                 fxmlFile = "AdminDashboard.fxml";
                 break;
-            case "Mechanic":
+            case "ROLE00003":
                 fxmlFile = "MechanicDashboard.fxml";
                 break;
-            case "SalesRep":
+            case "ROLE00005":
                 fxmlFile = "SalesRepDashboard.fxml";
                 break;
             default:
@@ -145,7 +145,7 @@ public class InventoryController {
 
     @FXML
     public void showCustomerView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin") || LoginController.getLoggedInUserRole().equals("SalesRep")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
             loadView("CustomerView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
@@ -155,7 +155,7 @@ public class InventoryController {
 
     @FXML
     public void showVehicleView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin") || LoginController.getLoggedInUserRole().equals("SalesRep")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
             loadView("VehicleView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
@@ -170,7 +170,7 @@ public class InventoryController {
 
     @FXML
     public void showPaymentView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin") || LoginController.getLoggedInUserRole().equals("SalesRep")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
             loadView("PaymentView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
@@ -185,7 +185,7 @@ public class InventoryController {
 
     @FXML
     public void showUserView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
             loadView("UserView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
@@ -195,7 +195,7 @@ public class InventoryController {
 
     @FXML
     public void showNotificationView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
             loadView("NotificationView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
@@ -205,7 +205,7 @@ public class InventoryController {
 
     @FXML
     public void showServiceManagementView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
             loadView("ServiceManagementView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
@@ -215,7 +215,7 @@ public class InventoryController {
 
     @FXML
     public void showServicePackageManagementView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
             loadView("ServicePackageManagementView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
@@ -225,7 +225,7 @@ public class InventoryController {
 
     @FXML
     public void showMechanicAvailabilityView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin") || LoginController.getLoggedInUserRole().equals("Mechanic")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00003")) {
             loadView("MechanicAvailabilityView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Mechanics can access this view");
@@ -245,7 +245,7 @@ public class InventoryController {
 
     @FXML
     public void showInvoiceGenerationView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("Admin") || LoginController.getLoggedInUserRole().equals("SalesRep")) {
+        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
             loadView("InvoiceGenerationView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");

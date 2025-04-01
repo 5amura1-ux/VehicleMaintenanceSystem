@@ -25,10 +25,10 @@ public class MechanicDashboardController {
             try {
                 String fxmlFile;
                 switch (LoginController.getLoggedInUserRole()) {
-                    case "Admin":
+                    case "ROLE00004":
                         fxmlFile = "AdminDashboard.fxml";
                         break;
-                    case "SalesRep":
+                    case "ROLE00005":
                         fxmlFile = "SalesRepDashboard.fxml";
                         break;
                     default:

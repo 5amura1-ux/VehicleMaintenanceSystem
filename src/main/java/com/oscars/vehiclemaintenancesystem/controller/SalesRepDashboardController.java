@@ -29,20 +29,20 @@ public class SalesRepDashboardController {
     @FXML
     public void initialize() {
         // Check role-based access (only SalesReps can access this view)
-        if (!"SalesRep".equals(LoginController.getLoggedInUserRole())) {
+        if (!"ROLE00005".equals(LoginController.getLoggedInUserRole())) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Sales Representatives can access this view");
             alert.showAndWait();
             try {
                 String fxmlFile;
                 switch (LoginController.getLoggedInUserRole()) {
-                    case "Admin":
+                    case "ROLE00004":
                         fxmlFile = "AdminDashboard.fxml";
                         break;
-                    case "Mechanic":
+                    case "ROLE00003":
                         fxmlFile = "MechanicDashboard.fxml";
                         break;
                     default:
-                        fxmlFile = "LoginView.fxml";
+                        fxmlFile = "Login.fxml"; // Update to match the actual file name
                 }
                 loadView(fxmlFile);
             } catch (IOException e) {
@@ -107,7 +107,7 @@ public class SalesRepDashboardController {
     @FXML
     public void logout() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
             Stage stage = (Stage) welcomeLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {

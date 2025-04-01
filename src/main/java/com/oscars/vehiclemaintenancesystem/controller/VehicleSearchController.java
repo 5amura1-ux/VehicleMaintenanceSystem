@@ -32,16 +32,16 @@ public class VehicleSearchController {
     @FXML
     public void initialize() {
         // Check role-based access (only Admins can access this view)
-        if (!"Admin".equals(LoginController.getLoggedInUserRole())) {
+        if (!"ROLE00004".equals(LoginController.getLoggedInUserRole())) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
             alert.showAndWait();
             try {
                 String fxmlFile;
                 switch (LoginController.getLoggedInUserRole()) {
-                    case "Mechanic":
+                    case "ROLE00003":
                         fxmlFile = "MechanicDashboard.fxml";
                         break;
-                    case "SalesRep":
+                    case "ROLE00005":
                         fxmlFile = "SalesRepDashboard.fxml";
                         break;
                     default:

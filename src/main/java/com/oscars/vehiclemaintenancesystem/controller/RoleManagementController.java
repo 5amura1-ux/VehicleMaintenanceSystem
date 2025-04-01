@@ -24,7 +24,7 @@ public class RoleManagementController {
     @FXML
     public void initialize() {
         // Check role-based access (only Admins can access this view)
-        if (!"Admin".equals(LoginController.getLoggedInUserRole())) {
+        if (!"ROLE00004".equals(LoginController.getLoggedInUserRole())) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
             alert.showAndWait();
             try {

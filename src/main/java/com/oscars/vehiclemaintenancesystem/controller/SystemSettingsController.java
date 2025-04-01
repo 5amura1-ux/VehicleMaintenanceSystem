@@ -23,10 +23,10 @@ public class SystemSettingsController {
             try {
                 String fxmlFile;
                 switch (LoginController.getLoggedInUserRole()) {
-                    case "Mechanic":
+                    case "ROLE00003":
                         fxmlFile = "MechanicDashboard.fxml";
                         break;
-                    case "SalesRep":
+                    case "ROLE00005":
                         fxmlFile = "SalesRepDashboard.fxml";
                         break;
                     default:
