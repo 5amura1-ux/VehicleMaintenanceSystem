@@ -9,7 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,34 +28,28 @@ public class VehicleSearchController {
     @FXML private TableColumn<Vehicle, Integer> yearColumn;
     @FXML private TableColumn<Vehicle, String> licensePlateColumn;
     @FXML private TableColumn<Vehicle, String> colorColumn;
+    @FXML private VBox sidebar;
 
     private VehicleService vehicleService = new VehicleService();
 
+    private static final double WINDOW_WIDTH = 800;
+    private static final double WINDOW_HEIGHT = 600;
+
     @FXML
     public void initialize() {
-        // Check role-based access (only Admins can access this view)
-        if (!"ROLE00004".equals(LoginController.getLoggedInUserRole())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
+        // Check role-based access (only Admins and SalesReps can access this view)
+        if (!"ROLE00004".equals(LoginController.getLoggedInUserRole()) && !"ROLE00005".equals(LoginController.getLoggedInUserRole())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
             alert.showAndWait();
             try {
-                String fxmlFile;
-                switch (LoginController.getLoggedInUserRole()) {
-                    case "ROLE00003":
-                        fxmlFile = "MechanicDashboard.fxml";
-                        break;
-                    case "ROLE00005":
-                        fxmlFile = "SalesRepDashboard.fxml";
-                        break;
-                    default:
-                        fxmlFile = "LoginView.fxml";
-                }
-                loadView(fxmlFile);
+                loadView("Dashboard.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return;
         }
 
+        // Set up the table columns
         vehicleIdColumn.setCellValueFactory(new PropertyValueFactory<>("vehicleId"));
         customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         vinColumn.setCellValueFactory(new PropertyValueFactory<>("vin"));
@@ -62,6 +58,11 @@ public class VehicleSearchController {
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         licensePlateColumn.setCellValueFactory(new PropertyValueFactory<>("licensePlate"));
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
+
+        // Populate the sidebar based on role
+        populateSidebar(LoginController.getLoggedInUserRole());
+
+        // Load all vehicles
         loadAllVehicles();
     }
 
@@ -88,6 +89,73 @@ public class VehicleSearchController {
         }
     }
 
+    private void populateSidebar(String role) {
+        sidebar.getChildren().clear(); // Clear any existing buttons
+
+        // Add buttons based on role
+        switch (role) {
+            case "ROLE00004": // Admin
+                addButton("🏠 Dashboard", "Dashboard.fxml");
+                addButton("👥 Search Customers", "CustomerSearchView.fxml");
+                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("📅 Appointment History", "AppointmentHistory.fxml");
+                addButton("💳 Payments", "PaymentView.fxml");
+                addButton("📦 Inventory", "InventoryView.fxml");
+                addButton("📊 Inventory Report", "InventoryReportView.fxml");
+                addButton("👤 Users", "UserView.fxml");
+                addButton("🔔 Notifications", "NotificationView.fxml");
+                addButton("⚙️ Services", "ServiceManagementView.fxml");
+                addButton("📦 Packages", "ServicePackageManagementView.fxml");
+                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
+                addButton("📜 Audit Log", "AuditLogView.fxml");
+                addButton("❗ Error Log", "ErrorLogView.fxml");
+                addButton("⚙️ System Settings", "SystemSettingsView.fxml");
+                break;
+            case "ROLE00003": // Mechanic
+                addButton("🏠 Dashboard", "Dashboard.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
+                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
+                addButton("📋 Vehicle Checklist", "VehicleChecklistView.fxml");
+                break;
+            case "ROLE00005": // SalesRep
+                addButton("🏠 Dashboard", "Dashboard.fxml");
+                addButton("👥 Search Customers", "CustomerSearchView.fxml");
+                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("📅 Appointment History", "AppointmentHistory.fxml");
+                addButton("💳 Payments", "PaymentView.fxml");
+                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
+                addButton("📄 Invoice Generation", "InvoiceGenerationView.fxml");
+                break;
+        }
+
+        // Add Logout button for all roles
+        Button logoutButton = new Button("🚪 Logout");
+        logoutButton.setStyle("-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
+        logoutButton.setOnAction(this::logout);
+        sidebar.getChildren().add(logoutButton);
+    }
+
+    private void addButton(String text, String fxmlFile) {
+        Button button = new Button(text);
+        button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
+        if (text.equals("🚗 Vehicles")) {
+            button.setStyle("-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
+        }
+        button.setOnAction(event -> {
+            try {
+                loadView(fxmlFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading view: " + e.getMessage());
+                alert.showAndWait();
+            }
+        });
+        sidebar.getChildren().add(button);
+    }
+
     private void loadAllVehicles() {
         try {
             vehicleTable.setItems(FXCollections.observableArrayList(vehicleService.getAllVehicles()));
@@ -96,155 +164,24 @@ public class VehicleSearchController {
         }
     }
 
-    @FXML
-    public void showDashboard() throws IOException {
-        loadView("AdminDashboard.fxml");
-    }
-
-    @FXML
-    public void showCustomerView() throws IOException {
-        loadView("CustomerView.fxml");
-    }
-
-    @FXML
-    public void showVehicleView() throws IOException {
-        loadView("VehicleView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentView() throws IOException {
-        loadView("AppointmentView.fxml");
-    }
-
-    @FXML
-    public void showPaymentView() throws IOException {
-        loadView("PaymentView.fxml");
-    }
-
-    @FXML
-    public void showInventoryView() throws IOException {
-        loadView("InventoryView.fxml");
-    }
-
-    @FXML
-    public void showUserView() throws IOException {
-        loadView("UserView.fxml");
-    }
-
-    @FXML
-    public void showNotificationView() throws IOException {
-        loadView("NotificationView.fxml");
-    }
-
-    @FXML
-    public void showServiceManagementView() throws IOException {
-        loadView("ServiceManagementView.fxml");
-    }
-
-    @FXML
-    public void showServicePackageManagementView() throws IOException {
-        loadView("ServicePackageManagementView.fxml");
-    }
-
-    @FXML
-    public void showMechanicAvailabilityView() throws IOException {
-        loadView("MechanicAvailabilityView.fxml");
-    }
-
-    @FXML
-    public void showCustomerFeedbackView() throws IOException {
-        loadView("CustomerFeedbackView.fxml");
-    }
-
-    @FXML
-    public void showNotificationManagementView() throws IOException {
-        loadView("NotificationManagementView.fxml");
-    }
-
-    @FXML
-    public void showInvoiceGenerationView() throws IOException {
-        loadView("InvoiceGenerationView.fxml");
-    }
-
-    @FXML
-    public void showVehicleChecklistView() throws IOException {
-        loadView("VehicleChecklistView.fxml");
-    }
-
-    @FXML
-    public void showServiceCategoryManagementView() throws IOException {
-        loadView("ServiceCategoryManagementView.fxml");
-    }
-
-    @FXML
-    public void showUserActivityLogView() throws IOException {
-        loadView("UserActivityLogView.fxml");
-    }
-
-    @FXML
-    public void showSystemSettingsView() throws IOException {
-        loadView("SystemSettingsView.fxml");
-    }
-
-    @FXML
-    public void showDashboardAnalyticsView() throws IOException {
-        loadView("DashboardAnalyticsView.fxml");
-    }
-
-    @FXML
-    public void showAuditLogView() throws IOException {
-        loadView("AuditLogView.fxml");
-    }
-
-    @FXML
-    public void showErrorLogView() throws IOException {
-        loadView("ErrorLogView.fxml");
-    }
-
-    @FXML
-    public void showCustomerSearchView() throws IOException {
-        loadView("CustomerSearchView.fxml");
-    }
-
-    @FXML
-    public void showVehicleSearchView() throws IOException {
-        loadView("VehicleSearchView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentHistoryView() throws IOException {
-        loadView("AppointmentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showPaymentHistoryView() throws IOException {
-        loadView("PaymentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showInventoryReportView() throws IOException {
-        loadView("InventoryReportView.fxml");
-    }
-
-    @FXML
-    public void showUserProfileView() throws IOException {
-        loadView("UserProfileView.fxml");
-    }
-
-    @FXML
-    public void logout() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
-            Stage stage = (Stage) vehicleTable.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void loadView(String fxmlFile) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
         Stage stage = (Stage) vehicleTable.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        stage.setScene(scene);
+        stage.setTitle("Vehicle Maintenance System - " + fxmlFile.replace(".fxml", ""));
+    }
+
+    @FXML
+    private void logout(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+            Stage stage = (Stage) vehicleTable.getScene().getWindow();
+            Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            stage.setScene(scene);
+            stage.setTitle("Vehicle Maintenance System - Login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

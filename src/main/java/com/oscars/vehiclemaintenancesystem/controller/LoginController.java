@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -19,10 +20,15 @@ import java.util.Objects;
 public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
+    @FXML private Label errorLabel;
 
     private UserService userService = new UserService();
     private static String loggedInUser;
     private static String loggedInUserRole;
+
+    // Define standard window size
+    private static final double WINDOW_WIDTH = 1000;
+    private static final double WINDOW_HEIGHT = 700;
 
     public static String getLoggedInUser() {
         return loggedInUser;
@@ -39,8 +45,7 @@ public class LoginController {
             String password = passwordField.getText();
 
             if (username.isEmpty() || password.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter both username and password");
-                alert.showAndWait();
+                errorLabel.setText("Please enter both username and password");
                 return;
             }
 
@@ -58,41 +63,28 @@ public class LoginController {
                 loggedInUser = authenticatedUser.getUsername();
                 loggedInUserRole = authenticatedUser.getRoleId();
 
-                // Redirect to the appropriate dashboard based on role
-                String fxmlFile;
-                switch (loggedInUserRole) {
-                    case "ROLE00004":
-                        System.out.println("Admin logged in: " + loggedInUser);
-                        fxmlFile = "/AdminDashboard.fxml";
-                        break;
-                    case "ROLE00003":
-                        fxmlFile = "/MechanicDashboard.fxml";
-                        break;
-                    case "ROLE00005":
-                        fxmlFile = "/SalesRepDashboard.fxml";
-                        break;
-                    default:
-                        throw new IllegalStateException("Unknown role: " + loggedInUserRole);
-                }
-                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlFile)));
+                // Load the unified Dashboard.fxml for all roles
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Dashboard.fxml")));
                 Stage stage = (Stage) usernameField.getScene().getWindow();
-                stage.setScene(new Scene(root));
+                Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+                stage.setScene(scene);
+                stage.setTitle("Vehicle Maintenance System - Dashboard");
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Invalid username or password, or user is inactive");
-                alert.showAndWait();
+                errorLabel.setText("Invalid username or password, or user is inactive");
             }
         } catch (Exception e) {
-            e.printStackTrace(); // Added to log the full stack trace
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error during login: " + e.getMessage());
-            alert.showAndWait();
+            e.printStackTrace();
+            errorLabel.setText("Error during login: " + e.getMessage());
         }
     }
 
+    @FXML
     public void handleClose(ActionEvent event) {
         Stage stage = (Stage) usernameField.getScene().getWindow();
         stage.close();
     }
 
+    @FXML
     public void handleAbout(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About");

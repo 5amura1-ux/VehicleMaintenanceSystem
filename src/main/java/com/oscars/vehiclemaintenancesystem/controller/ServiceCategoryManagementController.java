@@ -236,7 +236,7 @@ public class ServiceCategoryManagementController {
 
     @FXML
     public void showInventoryReportView() throws IOException {
-        loadView("InventoryReportView.fxml");
+        loadView("InventoryView.fxml");
     }
 
     @FXML

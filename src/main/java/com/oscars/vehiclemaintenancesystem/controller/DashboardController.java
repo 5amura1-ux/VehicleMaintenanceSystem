@@ -1,80 +1,87 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
-import com.oscars.vehiclemaintenancesystem.model.Feedback;
-import com.oscars.vehiclemaintenancesystem.service.FeedbackService;
-import javafx.collections.FXCollections;
+import com.oscars.vehiclemaintenancesystem.model.Payment;
+import com.oscars.vehiclemaintenancesystem.service.AppointmentService;
+import com.oscars.vehiclemaintenancesystem.service.CustomerService;
+import com.oscars.vehiclemaintenancesystem.service.PaymentService;
+import com.oscars.vehiclemaintenancesystem.service.VehicleService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
-public class CustomerFeedbackController {
-    @FXML private TextField appointmentIdField;
-    @FXML private TextField customerIdField;
-    @FXML private TextField feedbackTextField;
-    @FXML private TextField ratingField;
-    @FXML private TableView<Feedback> feedbackTable;
-    @FXML private TableColumn<Feedback, String> feedbackIdColumn;
-    @FXML private TableColumn<Feedback, String> appointmentIdColumn;
-    @FXML private TableColumn<Feedback, String> customerIdColumn;
-    @FXML private TableColumn<Feedback, String> feedbackTextColumn;
-    @FXML private TableColumn<Feedback, Integer> ratingColumn;
+public class DashboardController {
+    @FXML private Label welcomeLabel;
+    @FXML private Label totalCustomersLabel;
+    @FXML private Label totalVehiclesLabel;
+    @FXML private Label totalAppointmentsLabel;
+    @FXML private Label totalRevenueLabel;
     @FXML private VBox sidebar;
 
-    private FeedbackService feedbackService = new FeedbackService();
+    private CustomerService customerService = new CustomerService();
+    private VehicleService vehicleService = new VehicleService();
+    private AppointmentService appointmentService = new AppointmentService();
+    private PaymentService paymentService = new PaymentService();
+
+    private static final double WINDOW_WIDTH = 1000;
+    private static final double WINDOW_HEIGHT = 700;
 
     @FXML
     public void initialize() {
-        // Set up the table columns
-        feedbackIdColumn.setCellValueFactory(new PropertyValueFactory<>("feedbackId"));
-        appointmentIdColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
-        customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
-        feedbackTextColumn.setCellValueFactory(new PropertyValueFactory<>("feedbackText"));
-        ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
+        String role = LoginController.getLoggedInUserRole();
+        String username = LoginController.getLoggedInUser();
+
+        // Set welcome message based on role
+        switch (role) {
+            case "ROLE00004":
+                welcomeLabel.setText("Welcome, " + username + " (Admin)");
+                break;
+            case "ROLE00003":
+                welcomeLabel.setText("Welcome, " + username + " (Mechanic)");
+                break;
+            case "ROLE00005":
+                welcomeLabel.setText("Welcome, " + username + " (Sales Representative)");
+                break;
+            default:
+                welcomeLabel.setText("Welcome, " + username);
+        }
 
         // Populate the sidebar based on role
-        populateSidebar(LoginController.getLoggedInUserRole());
+        populateSidebar(role);
 
-        // Load feedback
-        loadFeedback();
-    }
-
-    @FXML
-    public void submitFeedback() {
+        // Display statistics based on role
         try {
-            if (appointmentIdField.getText().isEmpty() || customerIdField.getText().isEmpty() || feedbackTextField.getText().isEmpty() || ratingField.getText().isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Please fill in all required fields");
-                alert.showAndWait();
-                return;
-            }
+            if (role.equals("ROLE00004") || role.equals("ROLE00005")) {
+                // Admin and SalesRep can see all stats
+                long totalCustomers = customerService.getAllCustomers().size();
+                long totalVehicles = vehicleService.getAllVehicles().size();
+                long totalAppointments = appointmentService.getAllAppointments().size();
+                double totalRevenue = paymentService.getAllPayments().stream()
+                        .mapToDouble(Payment::getAmount)
+                        .sum();
 
-            int rating = Integer.parseInt(ratingField.getText());
-            if (rating < 1 || rating > 5) {
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Rating must be between 1 and 5");
-                alert.showAndWait();
-                return;
-            }
+                totalCustomersLabel.setText("Total Customers: " + totalCustomers);
+                totalVehiclesLabel.setText("Total Vehicles: " + totalVehicles);
+                totalAppointmentsLabel.setText("Total Appointments: " + totalAppointments);
+                totalRevenueLabel.setText("Total Revenue: $" + String.format("%.2f", totalRevenue));
+            } else if (role.equals("ROLE00003")) {
+                // Mechanic only sees their appointments
+                long totalAppointments = appointmentService.getAppointmentsByMechanic(username).size();
+                totalAppointmentsLabel.setText("Total Appointments: " + totalAppointments);
 
-            feedbackService.addFeedback(
-                    appointmentIdField.getText(),
-                    customerIdField.getText(),
-                    feedbackTextField.getText(),
-                    rating
-            );
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Feedback submitted successfully");
-            alert.showAndWait();
-            loadFeedback();
-            clearFields();
+                // Hide other stats for Mechanic
+                totalCustomersLabel.setVisible(false);
+                totalVehiclesLabel.setVisible(false);
+                totalRevenueLabel.setVisible(false);
+            }
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error submitting feedback: " + e.getMessage());
-            alert.showAndWait();
+            e.printStackTrace();
         }
     }
 
@@ -84,14 +91,14 @@ public class CustomerFeedbackController {
         // Add buttons based on role
         switch (role) {
             case "ROLE00004": // Admin
-                addButton("🏠 Dashboard", "Dashboard.fxml");
                 addButton("👥 Search Customers", "CustomerSearchView.fxml");
                  addButton("🚗 Vehicles", "VehicleSearchView.fxml");
                 addButton("📅 Appointments", "AppointmentView.fxml");
                 addButton("📅 Appointment History", "AppointmentHistory.fxml");
                 addButton("💳 Payments", "PaymentView.fxml");
                 addButton("📦 Inventory", "InventoryView.fxml");
-                addButton("👤 Users", "UserView.fxml");
+                addButton("📊 Inventory Report", "InventoryReportView.fxml");
+                addButton("👤 Users", "UserProfileView.fxml");
                 addButton("🔔 Notifications", "NotificationView.fxml");
                 addButton("⚙️ Services", "ServiceManagementView.fxml");
                 addButton("📦 Packages", "ServicePackageManagementView.fxml");
@@ -101,14 +108,12 @@ public class CustomerFeedbackController {
                 addButton("⚙️ System Settings", "SystemSettingsView.fxml");
                 break;
             case "ROLE00003": // Mechanic
-                addButton("🏠 Dashboard", "Dashboard.fxml");
                 addButton("📅 Appointments", "AppointmentView.fxml");
                 addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
                 addButton("📝 Feedback", "CustomerFeedbackView.fxml");
                 addButton("📋 Vehicle Checklist", "VehicleChecklistView.fxml");
                 break;
             case "ROLE00005": // SalesRep
-                addButton("🏠 Dashboard", "Dashboard.fxml");
                 addButton("👥 Search Customers", "CustomerSearchView.fxml");
                  addButton("🚗 Vehicles", "VehicleSearchView.fxml");
                 addButton("📅 Appointments", "AppointmentView.fxml");
@@ -129,9 +134,6 @@ public class CustomerFeedbackController {
     private void addButton(String text, String fxmlFile) {
         Button button = new Button(text);
         button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
-        if (text.equals("📝 Feedback")) {
-            button.setStyle("-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
-        }
         button.setOnAction(event -> {
             try {
                 loadView(fxmlFile);
@@ -144,33 +146,22 @@ public class CustomerFeedbackController {
         sidebar.getChildren().add(button);
     }
 
-    private void loadFeedback() {
-        try {
-            feedbackTable.setItems(FXCollections.observableArrayList(feedbackService.getAllFeedback()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void clearFields() {
-        appointmentIdField.clear();
-        customerIdField.clear();
-        feedbackTextField.clear();
-        ratingField.clear();
-    }
-
     private void loadView(String fxmlFile) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
-        Stage stage = (Stage) feedbackTable.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        stage.setScene(scene);
+        stage.setTitle("Vehicle Maintenance System - " + fxmlFile.replace(".fxml", ""));
     }
 
     @FXML
     private void logout(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
-            Stage stage = (Stage) feedbackTable.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            Stage stage = (Stage) welcomeLabel.getScene().getWindow();
+            Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+            stage.setScene(scene);
+            stage.setTitle("Vehicle Maintenance System - Login");
         } catch (IOException e) {
             e.printStackTrace();
         }

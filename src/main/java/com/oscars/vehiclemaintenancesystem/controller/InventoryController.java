@@ -9,7 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
@@ -25,17 +27,36 @@ public class InventoryController {
     @FXML private TableColumn<InventoryItem, Integer> lowStockThresholdColumn;
     @FXML private TableColumn<InventoryItem, Double> unitPriceColumn;
     @FXML private TableColumn<InventoryItem, java.util.Date> lastUpdatedColumn;
+    @FXML private VBox sidebar;
 
     private InventoryService inventoryService = new InventoryService();
 
     @FXML
     public void initialize() {
+        // Check role-based access (only Admins can access this view)
+        if (!"ROLE00004".equals(LoginController.getLoggedInUserRole())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
+            alert.showAndWait();
+            try {
+                loadView("Dashboard.fxml");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        // Set up the table columns
         itemIdColumn.setCellValueFactory(new PropertyValueFactory<>("itemId"));
         itemNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         lowStockThresholdColumn.setCellValueFactory(new PropertyValueFactory<>("lowStockThreshold"));
         unitPriceColumn.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         lastUpdatedColumn.setCellValueFactory(new PropertyValueFactory<>("lastUpdated"));
+
+        // Populate the sidebar based on role
+        populateSidebar(LoginController.getLoggedInUserRole());
+
+        // Load inventory items
         loadInventoryItems();
     }
 
@@ -109,6 +130,73 @@ public class InventoryController {
         }
     }
 
+    private void populateSidebar(String role) {
+        sidebar.getChildren().clear(); // Clear any existing buttons
+
+        // Add buttons based on role
+        switch (role) {
+            case "ROLE00004": // Admin
+                addButton("🏠 Dashboard", "Dashboard.fxml");
+                addButton("👥 Search Customers", "CustomerSearchView.fxml");
+                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("📅 Appointment History", "AppointmentHistory.fxml");
+                addButton("💳 Payments", "PaymentView.fxml");
+                addButton("📦 Inventory", "InventoryView.fxml");
+                addButton("📊 Inventory Report", "InventoryReportView.fxml");
+                addButton("👤 Users", "UserView.fxml");
+                addButton("🔔 Notifications", "NotificationView.fxml");
+                addButton("⚙️ Services", "ServiceManagementView.fxml");
+                addButton("📦 Packages", "ServicePackageManagementView.fxml");
+                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
+                addButton("📜 Audit Log", "AuditLogView.fxml");
+                addButton("❗ Error Log", "ErrorLogView.fxml");
+                addButton("⚙️ System Settings", "SystemSettingsView.fxml");
+                break;
+            case "ROLE00003": // Mechanic
+                addButton("🏠 Dashboard", "Dashboard.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
+                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
+                addButton("📋 Vehicle Checklist", "VehicleChecklistView.fxml");
+                break;
+            case "ROLE00005": // SalesRep
+                addButton("🏠 Dashboard", "Dashboard.fxml");
+                addButton("👥 Search Customers", "CustomerSearchView.fxml");
+                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("📅 Appointment History", "AppointmentHistory.fxml");
+                addButton("💳 Payments", "PaymentView.fxml");
+                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
+                addButton("📄 Invoice Generation", "InvoiceGenerationView.fxml");
+                break;
+        }
+
+        // Add Logout button for all roles
+        Button logoutButton = new Button("🚪 Logout");
+        logoutButton.setStyle("-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
+        logoutButton.setOnAction(this::logout);
+        sidebar.getChildren().add(logoutButton);
+    }
+
+    private void addButton(String text, String fxmlFile) {
+        Button button = new Button(text);
+        button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
+        if (text.equals("📦 Inventory")) {
+            button.setStyle("-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
+        }
+        button.setOnAction(event -> {
+            try {
+                loadView(fxmlFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading view: " + e.getMessage());
+                alert.showAndWait();
+            }
+        });
+        sidebar.getChildren().add(button);
+    }
+
     private void loadInventoryItems() {
         try {
             inventoryTable.setItems(FXCollections.observableArrayList(inventoryService.getAllInventoryItems()));
@@ -124,139 +212,21 @@ public class InventoryController {
         unitPriceField.clear();
     }
 
-    @FXML
-    public void showDashboard() throws IOException {
-        String fxmlFile;
-        switch (LoginController.getLoggedInUserRole()) {
-            case "ROLE00004":
-                fxmlFile = "AdminDashboard.fxml";
-                break;
-            case "ROLE00003":
-                fxmlFile = "MechanicDashboard.fxml";
-                break;
-            case "ROLE00005":
-                fxmlFile = "SalesRepDashboard.fxml";
-                break;
-            default:
-                throw new IllegalStateException("Unknown role: " + LoginController.getLoggedInUserRole());
-        }
-        loadView(fxmlFile);
-    }
-
-    @FXML
-    public void showCustomerView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
-            loadView("CustomerView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showVehicleView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
-            loadView("VehicleView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showAppointmentView() throws IOException {
-        loadView("AppointmentView.fxml");
-    }
-
-    @FXML
-    public void showPaymentView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
-            loadView("PaymentView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showInventoryView() throws IOException {
-        loadView("InventoryView.fxml");
-    }
-
-    @FXML
-    public void showUserView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
-            loadView("UserView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showNotificationView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
-            loadView("NotificationView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showServiceManagementView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
-            loadView("ServiceManagementView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showServicePackageManagementView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
-            loadView("ServicePackageManagementView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showMechanicAvailabilityView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00003")) {
-            loadView("MechanicAvailabilityView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Mechanics can access this view");
-            alert.showAndWait();
-        }
-    }
-
-    @FXML
-    public void showCustomerFeedbackView() throws IOException {
-        loadView("CustomerFeedbackView.fxml");
-    }
-
-    @FXML
-    public void showNotificationManagementView() throws IOException {
-        loadView("NotificationManagementView.fxml");
-    }
-
-    @FXML
-    public void showInvoiceGenerationView() throws IOException {
-        if (LoginController.getLoggedInUserRole().equals("ROLE00004") || LoginController.getLoggedInUserRole().equals("ROLE00005")) {
-            loadView("InvoiceGenerationView.fxml");
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
-            alert.showAndWait();
-        }
-    }
-
     private void loadView(String fxmlFile) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/" + fxmlFile));
         Parent root = loader.load();
         Stage stage = (Stage) inventoryTable.getScene().getWindow();
         stage.setScene(new Scene(root));
+    }
+
+    @FXML
+    private void logout(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+            Stage stage = (Stage) inventoryTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

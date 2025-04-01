@@ -2,43 +2,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import java.lang.Boolean?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.VehicleChecklistController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.VehicleChecklistController"
+            style="-fx-background-color: #ecf0f1;">
     <left>
-        <VBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
-            <Button text="🏠 Dashboard" onAction="#showDashboard" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <!-- Admin and Mechanic Menu -->
-            <Button text="📅 Appointments" onAction="#showAppointmentView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="🔧 Mechanic Availability" onAction="#showMechanicAvailabilityView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📝 Feedback" onAction="#showCustomerFeedbackView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📋 Vehicle Checklist" onAction="#showVehicleChecklistView" style="-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <!-- Admin-Only Menu Items -->
-            <fx:define>
-                <Boolean fx:id="isAdmin" fx:value="${LoginController.loggedInUserRole == 'Admin'}"/>
-            </fx:define>
-            <Button text="👥 Customers" onAction="#showCustomerView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="🚗 Vehicles" onAction="#showVehicleView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="💳 Payments" onAction="#showPaymentView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📄 Invoice Generation" onAction="#showInvoiceGenerationView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📦 Inventory" onAction="#showInventoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="👤 Users" onAction="#showUserView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="🔔 Notifications" onAction="#showNotificationView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="⚙️ Services" onAction="#showServiceManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📦 Packages" onAction="#showServicePackageManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="🔔 Manage Notifications" onAction="#showNotificationManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📋 Service Categories" onAction="#showServiceCategoryManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📜 User Activity Log" onAction="#showUserActivityLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="⚙️ System Settings" onAction="#showSystemSettingsView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📊 Dashboard Analytics" onAction="#showDashboardAnalyticsView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📜 Audit Log" onAction="#showAuditLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="❗ Error Log" onAction="#showErrorLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="🔍 Customer Search" onAction="#showCustomerSearchView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="🔍 Vehicle Search" onAction="#showVehicleSearchView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📅 Appointment History" onAction="#showAppointmentHistoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="💳 Payment History" onAction="#showPaymentHistoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="📊 Inventory Report" onAction="#showInventoryReportView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="👤 Profile" onAction="#showUserProfileView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;" visible="${isAdmin}"/>
-            <Button text="🚪 Logout" onAction="#logout" style="-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;"/>
+        <VBox fx:id="sidebar" spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;" minWidth="200">
+            <!-- Buttons will be added dynamically in the controller -->
         </VBox>
     </left>
     <center>
@@ -46,7 +14,7 @@
             <Label text="📋 Vehicle Checklist" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
             <GridPane hgap="10" vgap="10">
                 <Label text="Vehicle ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="vehicleIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                <TextField fx:id="vehicleIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200" maxWidth="200"/>
             </GridPane>
             <Button text="🔍 Check Vehicle" onAction="#checkVehicle" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
             <TextArea fx:id="checklistField" style="-fx-pref-height: 150;" editable="false" text="Enter a Vehicle ID to generate the checklist."/>

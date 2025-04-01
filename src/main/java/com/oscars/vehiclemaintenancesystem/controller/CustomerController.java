@@ -344,7 +344,7 @@ public class CustomerController {
     @FXML
     public void showInventoryReportView() throws IOException {
         if (LoginController.getLoggedInUserRole().equals("ROLE00004")) {
-            loadView("InventoryReportView.fxml");
+            loadView("InventoryView.fxml");
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
             alert.showAndWait();

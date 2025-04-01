@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+    private static final double WINDOW_WIDTH = 1000;
+    private static final double WINDOW_HEIGHT = 700;
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Welcome to Vehicle Maintenance System");
@@ -19,7 +21,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(fxmlLocation);
         System.out.println("Login page loading");
         Parent root = loader.load();
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Vehicle Maintenance System");
         primaryStage.show();

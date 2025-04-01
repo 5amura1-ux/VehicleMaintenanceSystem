@@ -2,12 +2,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.LoginController"
-      spacing="15" alignment="CENTER" style="-fx-background-color: #ecf0f1; -fx-padding: 20;">
-    <Label text="🔑 Login" style="-fx-font-size: 24; -fx-text-fill: #2c3e50;"/>
-    <TextField fx:id="usernameField" promptText="Username" style="-fx-pref-width: 250;"/>
-    <PasswordField fx:id="passwordField" promptText="Password" style="-fx-pref-width: 250;"/>
-    <Button text="Login" onAction="#login" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
-    <Label fx:id="errorLabel" text=" " style="-fx-text-fill: #e74c3c; -fx-font-size: 12;"/>
-</VBox>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.LoginController"
+            style="-fx-background-color: #ecf0f1;">
+    <center>
+        <VBox spacing="15" alignment="CENTER" style="-fx-padding: 20;">
+            <Label text="🔑 Vehicle Maintenance System Login" style="-fx-font-size: 24; -fx-text-fill: #2c3e50;"/>
+            <TextField fx:id="usernameField" promptText="Username" prefWidth="200" maxWidth="200"/>
+            <PasswordField fx:id="passwordField" promptText="Password" prefWidth="200" maxWidth="200"/>
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Login" onAction="#login" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
+                <Button text="Close" onAction="#handleClose" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
+                <Button text="About" onAction="#handleAbout" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
+            </HBox>
+            <Label fx:id="errorLabel" text=" " style="-fx-text-fill: #e74c3c; -fx-font-size: 12;"/>
+        </VBox>
+    </center>
+</BorderPane>

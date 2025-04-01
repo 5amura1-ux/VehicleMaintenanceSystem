@@ -9,7 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 
 import java.io.IOException;
 
@@ -21,6 +23,7 @@ public class AuditLogController {
     @FXML private TableColumn<AuditLog, String> userIdColumn;
     @FXML private TableColumn<AuditLog, String> detailsColumn;
     @FXML private TableColumn<AuditLog, java.util.Date> timestampColumn;
+    @FXML private VBox sidebar;
 
     private AuditLogService auditLogService = new AuditLogService();
 
@@ -31,31 +34,89 @@ public class AuditLogController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
             alert.showAndWait();
             try {
-                String fxmlFile;
-                switch (LoginController.getLoggedInUserRole()) {
-                    case "ROLE00003":
-                        fxmlFile = "MechanicDashboard.fxml";
-                        break;
-                    case "ROLE00005":
-                        fxmlFile = "SalesRepDashboard.fxml";
-                        break;
-                    default:
-                        fxmlFile = "LoginView.fxml";
-                }
-                loadView(fxmlFile);
+                loadView("Dashboard.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return;
         }
 
+        // Set up the table columns
         logIdColumn.setCellValueFactory(new PropertyValueFactory<>("logId"));
         tableNameColumn.setCellValueFactory(new PropertyValueFactory<>("tableName"));
         actionColumn.setCellValueFactory(new PropertyValueFactory<>("action"));
         userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
         detailsColumn.setCellValueFactory(new PropertyValueFactory<>("details"));
         timestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+
+        // Populate the sidebar based on role
+        populateSidebar(LoginController.getLoggedInUserRole());
+
+        // Load audit logs
         loadAuditLogs();
+    }
+
+    private void populateSidebar(String role) {
+        sidebar.getChildren().clear(); // Clear any existing buttons
+
+        // Add buttons based on role
+        switch (role) {
+            case "ROLE00004": // Admin
+                addButton("👥 Search Customers", "CustomerSearchView.fxml");
+                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("📅 Appointments History", "AppointmentHistoryView.fxml");
+                addButton("💳 Payments", "PaymentView.fxml");
+                addButton("📦 Inventory", "InventoryView.fxml");
+                addButton("👤 Users", "UserView.fxml");
+                addButton("🔔 Notifications", "NotificationView.fxml");
+                addButton("⚙️ Services", "ServiceManagementView.fxml");
+                addButton("📦 Packages", "ServicePackageManagementView.fxml");
+                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
+                addButton("📜 Audit Log", "AuditLogView.fxml");
+                addButton("❗ Error Log", "ErrorLogView.fxml");
+                addButton("⚙️ System Settings", "SystemSettingsView.fxml");
+                break;
+            case "ROLE00003": // Mechanic
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
+                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
+                addButton("📋 Vehicle Checklist", "VehicleChecklistView.fxml");
+                break;
+            case "ROLE00005": // SalesRep
+                addButton("👥 Search Customers", "CustomerSearchView.fxml");
+                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
+                addButton("📅 Appointments", "AppointmentView.fxml");
+                addButton("📅 Appointments History", "AppointmentHistoryView.fxml");
+                addButton("💳 Payments", "PaymentView.fxml");
+                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
+                addButton("📄 Invoice Generation", "InvoiceGenerationView.fxml");
+                break;
+        }
+
+        // Add Logout button for all roles
+        Button logoutButton = new Button("🚪 Logout");
+        logoutButton.setStyle("-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
+        logoutButton.setOnAction(this::logout);
+        sidebar.getChildren().add(logoutButton);
+    }
+
+    private void addButton(String text, String fxmlFile) {
+        Button button = new Button(text);
+        button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
+        if (text.equals("📜 Audit Log")) {
+            button.setStyle("-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
+        }
+        button.setOnAction(event -> {
+            try {
+                loadView(fxmlFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading view: " + e.getMessage());
+                alert.showAndWait();
+            }
+        });
+        sidebar.getChildren().add(button);
     }
 
     private void loadAuditLogs() {
@@ -66,155 +127,20 @@ public class AuditLogController {
         }
     }
 
-    @FXML
-    public void showDashboard() throws IOException {
-        loadView("AdminDashboard.fxml");
+    private void loadView(String fxmlFile) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
+        Stage stage = (Stage) auditLogTable.getScene().getWindow();
+        stage.setScene(new Scene(root));
     }
 
     @FXML
-    public void showCustomerView() throws IOException {
-        loadView("CustomerView.fxml");
-    }
-
-    @FXML
-    public void showVehicleView() throws IOException {
-        loadView("VehicleView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentView() throws IOException {
-        loadView("AppointmentView.fxml");
-    }
-
-    @FXML
-    public void showPaymentView() throws IOException {
-        loadView("PaymentView.fxml");
-    }
-
-    @FXML
-    public void showInventoryView() throws IOException {
-        loadView("InventoryView.fxml");
-    }
-
-    @FXML
-    public void showUserView() throws IOException {
-        loadView("UserView.fxml");
-    }
-
-    @FXML
-    public void showNotificationView() throws IOException {
-        loadView("NotificationView.fxml");
-    }
-
-    @FXML
-    public void showServiceManagementView() throws IOException {
-        loadView("ServiceManagementView.fxml");
-    }
-
-    @FXML
-    public void showServicePackageManagementView() throws IOException {
-        loadView("ServicePackageManagementView.fxml");
-    }
-
-    @FXML
-    public void showMechanicAvailabilityView() throws IOException {
-        loadView("MechanicAvailabilityView.fxml");
-    }
-
-    @FXML
-    public void showCustomerFeedbackView() throws IOException {
-        loadView("CustomerFeedbackView.fxml");
-    }
-
-    @FXML
-    public void showNotificationManagementView() throws IOException {
-        loadView("NotificationManagementView.fxml");
-    }
-
-    @FXML
-    public void showInvoiceGenerationView() throws IOException {
-        loadView("InvoiceGenerationView.fxml");
-    }
-
-    @FXML
-    public void showVehicleChecklistView() throws IOException {
-        loadView("VehicleChecklistView.fxml");
-    }
-
-    @FXML
-    public void showServiceCategoryManagementView() throws IOException {
-        loadView("ServiceCategoryManagementView.fxml");
-    }
-
-    @FXML
-    public void showUserActivityLogView() throws IOException {
-        loadView("UserActivityLogView.fxml");
-    }
-
-    @FXML
-    public void showSystemSettingsView() throws IOException {
-        loadView("SystemSettingsView.fxml");
-    }
-
-    @FXML
-    public void showDashboardAnalyticsView() throws IOException {
-        loadView("DashboardAnalyticsView.fxml");
-    }
-
-    @FXML
-    public void showAuditLogView() throws IOException {
-        loadView("AuditLogView.fxml");
-    }
-
-    @FXML
-    public void showErrorLogView() throws IOException {
-        loadView("ErrorLogView.fxml");
-    }
-
-    @FXML
-    public void showCustomerSearchView() throws IOException {
-        loadView("CustomerSearchView.fxml");
-    }
-
-    @FXML
-    public void showVehicleSearchView() throws IOException {
-        loadView("VehicleSearchView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentHistoryView() throws IOException {
-        loadView("AppointmentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showPaymentHistoryView() throws IOException {
-        loadView("PaymentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showInventoryReportView() throws IOException {
-        loadView("InventoryReportView.fxml");
-    }
-
-    @FXML
-    public void showUserProfileView() throws IOException {
-        loadView("UserProfileView.fxml");
-    }
-
-    @FXML
-    public void logout() {
+    private void logout(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
             Stage stage = (Stage) auditLogTable.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void loadView(String fxmlFile) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
-        Stage stage = (Stage) auditLogTable.getScene().getWindow();
-        stage.setScene(new Scene(root));
     }
 }
