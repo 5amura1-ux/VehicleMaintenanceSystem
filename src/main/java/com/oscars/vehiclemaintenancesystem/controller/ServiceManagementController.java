@@ -3,6 +3,7 @@ package com.oscars.vehiclemaintenancesystem.controller;
 import com.oscars.vehiclemaintenancesystem.model.Service;
 import com.oscars.vehiclemaintenancesystem.service.ServiceService;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -288,5 +289,8 @@ public class ServiceManagementController {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
         Stage stage = (Stage) serviceTable.getScene().getWindow();
         stage.setScene(new Scene(root));
+    }
+
+    public void showRoleManagementView(ActionEvent actionEvent) {
     }
 }

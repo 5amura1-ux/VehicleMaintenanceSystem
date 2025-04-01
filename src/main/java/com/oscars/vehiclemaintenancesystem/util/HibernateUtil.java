@@ -8,18 +8,18 @@ public class HibernateUtil {
 
     private static SessionFactory buildSessionFactory() {
         try {
-            return new Configuration().configure().buildSessionFactory();
-        } catch (Exception ex) {
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
+            Configuration configuration = new Configuration();
+            configuration.configure("hibernate.cfg.xml"); // Explicitly specify the file
+            System.out.println("Hibernate configuration loaded successfully");
+            return configuration.buildSessionFactory();
+        } catch (Exception e) {
+            System.err.println("Initial SessionFactory creation failed: " + e.getMessage());
+            e.printStackTrace();
+            throw new ExceptionInInitializerError(e);
         }
     }
 
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
-    }
-
-    public static void shutdown() {
-        getSessionFactory().close();
     }
 }

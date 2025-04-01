@@ -13,19 +13,21 @@
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <!-- Entity classes -->
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Customer"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Vehicle"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.ServiceCategory"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Service"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.ServicePackage"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.ServicePackageDetail"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Appointment"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Payment"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Inventory"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Role"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.User"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.Notification"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.AuditLog"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.entity.ErrorLog"/>
+        <property name="hibernate.archive.autodetection">class</property>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.User"/>
+
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Customer"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Vehicle"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.ServiceCategory"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Service"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.ServicePackage"/>
+<!--        <mapping class="com.oscars.vehiclemaintenancesystem.model.ServicePackageDetail"/>-->
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Appointment"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Payment"/>
+<!--        <mapping class="com.oscars.vehiclemaintenancesystem.model.Inventory"/>-->
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Role"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Notification"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.AuditLog"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.ErrorLog"/>
     </session-factory>
 </hibernate-configuration>

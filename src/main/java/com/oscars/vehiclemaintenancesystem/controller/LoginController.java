@@ -13,9 +13,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Objects;
 
 public class LoginController {
     @FXML private TextField usernameField;
@@ -45,11 +44,11 @@ public class LoginController {
                 return;
             }
 
-            String encryptedPassword = encryptPassword(password);
+            // Removed encryption, compare raw password directly
             List<User> users = userService.getAllUsers();
             User authenticatedUser = null;
             for (User user : users) {
-                if (user.getUsername().equals(username) && user.getPassword().equals(encryptedPassword) && user.getStatus().equals("Active")) {
+                if (user.getUsername().equals(username) && user.getPassword().equals(password) && user.getStatus().equals("Active")) {
                     authenticatedUser = user;
                     break;
                 }
@@ -62,7 +61,8 @@ public class LoginController {
                 // Redirect to the appropriate dashboard based on role
                 String fxmlFile;
                 switch (loggedInUserRole) {
-                    case "Admin":
+                    case "ROLE00004":
+                        System.out.println("Admin logged in: " + loggedInUser);
                         fxmlFile = "/AdminDashboard.fxml";
                         break;
                     case "Mechanic":
@@ -74,7 +74,7 @@ public class LoginController {
                     default:
                         throw new IllegalStateException("Unknown role: " + loggedInUserRole);
                 }
-                Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
+                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxmlFile)));
                 Stage stage = (Stage) usernameField.getScene().getWindow();
                 stage.setScene(new Scene(root));
             } else {
@@ -82,27 +82,15 @@ public class LoginController {
                 alert.showAndWait();
             }
         } catch (Exception e) {
+            e.printStackTrace(); // Added to log the full stack trace
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error during login: " + e.getMessage());
             alert.showAndWait();
         }
     }
 
-    private String encryptPassword(String password) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] hash = digest.digest(password.getBytes());
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : hash) {
-            String hex = Integer.toHexString(0xff & b);
-            if (hex.length() == 1) hexString.append('0');
-            hexString.append(hex);
-        }
-        return hexString.toString();
-    }
-
-        public void handleClose( ActionEvent event) {
+    public void handleClose(ActionEvent event) {
         Stage stage = (Stage) usernameField.getScene().getWindow();
         stage.close();
-
     }
 
     public void handleAbout(ActionEvent actionEvent) {
@@ -112,13 +100,4 @@ public class LoginController {
         alert.setContentText("This application is a vehicle maintenance and service management system. It allows users to manage vehicles, maintenance schedules, and service requests. The system has three user roles: Admin, Mechanic, and Sales Representative. Each role has different permissions and capabilities.");
         alert.showAndWait();
     }
-//    public void getLoggedInUser(ActionEvent actionEvent) {
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("Logged In User");
-//        alert.setHeaderText("Logged In User");
-//        alert.setContentText("The logged in user is: " + loggedInUser);
-//        alert.showAndWait();
-//    }
-
-
 }

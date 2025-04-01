@@ -3,6 +3,7 @@ package com.oscars.vehiclemaintenancesystem.controller;
 import com.oscars.vehiclemaintenancesystem.model.ErrorLog;
 import com.oscars.vehiclemaintenancesystem.service.ErrorLogService;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -214,5 +215,8 @@ public class ErrorLogController {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
         Stage stage = (Stage) errorLogTable.getScene().getWindow();
         stage.setScene(new Scene(root));
+    }
+
+    public void showRoleManagementView(ActionEvent actionEvent) {
     }
 }

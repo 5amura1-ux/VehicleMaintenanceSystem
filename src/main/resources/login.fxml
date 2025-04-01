@@ -1,57 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.oscars.vehiclemaintenancesystem.controller.LoginController"
-            prefWidth="900" prefHeight="650" styleClass="root">
-
-    <!-- Top: Menu Bar and Header -->
-    <top>
-        <VBox>
-            <MenuBar prefHeight="26.0" prefWidth="900.0">
-                <menus>
-                    <Menu mnemonicParsing="false" text="File">
-                        <items>
-                            <MenuItem mnemonicParsing="false" text="Close" onAction="#handleClose" />
-                        </items>
-                    </Menu>
-                    <Menu mnemonicParsing="false" text="Help">
-                        <items>
-                            <MenuItem mnemonicParsing="false" text="About" onAction="#handleAbout" />
-                        </items>
-                    </Menu>
-                </menus>
-            </MenuBar>
-            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="header">
-                <Label text="Vehicle Service Management System" styleClass="header-title"/>
-                <HBox HBox.hgrow="ALWAYS"/>
-            </HBox>
-        </VBox>
-    </top>
-
-    <!-- Center: Login Form Container -->
-    <center>
-        <VBox spacing="30" styleClass="login-background" alignment="CENTER">
-            <padding>
-                <Insets top="40" right="150" bottom="40" left="150"/>
-            </padding>
-            <VBox alignment="CENTER" spacing="20" styleClass="login-form">
-                <Label text="Login" style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #333333;" />
-                <Label text="Enter your email and Password" styleClass="form-label" />
-                <VBox spacing="8">
-                    <Label text="Username" styleClass="form-label" />
-                    <TextField fx:id="usernameField" promptText="email@domain.com" styleClass="text-field" />
-                </VBox>
-                <VBox spacing="8">
-                    <Label text="Password" styleClass="form-label" />
-                    <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field" />
-                </VBox>
-                <Button fx:id="loginButton" text="Login" onAction="#Login" onMouseEntered="#handleMouseEnter" onMouseExited="#handleMouseExit" styleClass="primary-button" />
-                <Label fx:id="errorLabel" text="" visible="false" styleClass="error-label" />
-            </VBox>
-        </VBox>
-    </center>
-</BorderPane>
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.LoginController"
+      spacing="15" alignment="CENTER" style="-fx-background-color: #ecf0f1; -fx-padding: 20;">
+    <Label text="🔑 Login" style="-fx-font-size: 24; -fx-text-fill: #2c3e50;"/>
+    <TextField fx:id="usernameField" promptText="Username" style="-fx-pref-width: 250;"/>
+    <PasswordField fx:id="passwordField" promptText="Password" style="-fx-pref-width: 250;"/>
+    <Button text="Login" onAction="#login" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
+    <Label fx:id="errorLabel" text=" " style="-fx-text-fill: #e74c3c; -fx-font-size: 12;"/>
+</VBox>
