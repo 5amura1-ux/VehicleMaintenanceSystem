@@ -21,7 +21,7 @@ public class ServiceCategoryManagementController {
     @FXML private TableColumn<ServiceCategory, String> categoryNameColumn;
     @FXML private TableColumn<ServiceCategory, String> descriptionColumn;
 
-    private ServiceCategoryService serviceCategoryService = new ServiceCategoryService();
+    private final ServiceCategoryService serviceCategoryService = new ServiceCategoryService();
 
     @FXML
     public void initialize() {

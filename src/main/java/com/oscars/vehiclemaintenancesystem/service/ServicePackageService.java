@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.ServicePackage;
 import java.util.List;
 
 public class ServicePackageService {
-    private ServicePackageDAO servicePackageDAO = new ServicePackageDAO();
+    private final ServicePackageDAO servicePackageDAO = new ServicePackageDAO();
 
     public String addServicePackage(String packageName, String description, double discountPrice) throws Exception {
         return servicePackageDAO.insertServicePackage(packageName, description, discountPrice);

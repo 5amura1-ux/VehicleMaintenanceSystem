@@ -28,7 +28,7 @@ public class CustomerSearchController {
     @FXML private TableColumn<Customer, String> addressColumn;
     @FXML private VBox sidebar;
 
-    private CustomerService customerService = new CustomerService();
+    private final CustomerService customerService = new CustomerService();
 
     @FXML
     public void initialize() {

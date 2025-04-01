@@ -22,7 +22,7 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
 
-    private UserService userService = new UserService();
+    private final UserService userService = new UserService();
     private static String loggedInUser;
     private static String loggedInUserRole;
 

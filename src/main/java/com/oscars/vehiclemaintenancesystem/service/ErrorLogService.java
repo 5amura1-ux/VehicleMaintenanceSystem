@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.ErrorLog;
 import java.util.List;
 
 public class ErrorLogService {
-    private ErrorLogDAO errorLogDAO = new ErrorLogDAO();
+    private final ErrorLogDAO errorLogDAO = new ErrorLogDAO();
 
     public List<ErrorLog> getAllErrorLogs() {
         return errorLogDAO.getAllErrorLogs();

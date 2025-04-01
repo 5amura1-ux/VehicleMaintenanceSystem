@@ -19,7 +19,7 @@ public class RoleManagementController {
     @FXML private TableColumn<Role, String> roleIdColumn;
     @FXML private TableColumn<Role, String> roleNameColumn;
 
-    private RoleService roleService = new RoleService();
+    private final RoleService roleService = new RoleService();
 
     @FXML
     public void initialize() {

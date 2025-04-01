@@ -26,7 +26,7 @@ public class UserProfileController {
     @FXML private Label statusLabel;
     @FXML private VBox sidebar;
 
-    private UserService userService = new UserService();
+    private final UserService userService = new UserService();
 
     private static final double WINDOW_WIDTH = 800;
     private static final double WINDOW_HEIGHT = 600;

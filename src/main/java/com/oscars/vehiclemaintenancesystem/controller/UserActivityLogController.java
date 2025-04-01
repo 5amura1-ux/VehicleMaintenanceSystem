@@ -22,7 +22,7 @@ public class UserActivityLogController {
     @FXML private TableColumn<AuditLog, String> detailsColumn;
     @FXML private TableColumn<AuditLog, java.util.Date> timestampColumn;
 
-    private AuditLogService auditLogService = new AuditLogService();
+    private final AuditLogService auditLogService = new AuditLogService();
 
     @FXML
     public void initialize() {

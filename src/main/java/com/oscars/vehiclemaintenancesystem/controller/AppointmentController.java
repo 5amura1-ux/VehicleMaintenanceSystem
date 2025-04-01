@@ -36,7 +36,7 @@ public class AppointmentController {
     @FXML private TableColumn<Appointment, String> notesColumn;
     @FXML private VBox sidebar;
 
-    private AppointmentService appointmentService = new AppointmentService();
+    private final AppointmentService appointmentService = new AppointmentService();
 
     @FXML
     public void initialize() {

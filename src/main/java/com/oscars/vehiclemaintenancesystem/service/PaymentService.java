@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.Payment;
 import java.util.List;
 
 public class PaymentService {
-    private PaymentDAO paymentDAO = new PaymentDAO();
+    private final PaymentDAO paymentDAO = new PaymentDAO();
 
     public String processPayment(String appointmentId, String paymentMethod) throws Exception {
         return paymentDAO.insertPayment(appointmentId, paymentMethod);

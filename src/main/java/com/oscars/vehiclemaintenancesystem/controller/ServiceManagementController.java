@@ -28,7 +28,7 @@ public class ServiceManagementController {
     @FXML private TableColumn<Service, Double> baseCostColumn;
     @FXML private TableColumn<Service, Integer> estimatedTimeColumn;
 
-    private ServiceService serviceService = new ServiceService();
+    private final ServiceService serviceService = new ServiceService();
 
     @FXML
     public void initialize() {

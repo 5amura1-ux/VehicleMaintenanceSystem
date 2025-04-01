@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.Notification;
 import java.util.List;
 
 public class NotificationService {
-    private NotificationDAO notificationDAO = new NotificationDAO();
+    private final NotificationDAO notificationDAO = new NotificationDAO();
 
     public List<Notification> getAllNotifications() {
         return notificationDAO.getAllNotifications();

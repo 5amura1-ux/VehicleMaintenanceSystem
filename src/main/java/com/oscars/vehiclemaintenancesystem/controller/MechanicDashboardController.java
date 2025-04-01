@@ -14,7 +14,7 @@ public class MechanicDashboardController {
     @FXML private Label welcomeLabel;
     @FXML private Label totalAppointmentsLabel;
 
-    private AppointmentService appointmentService = new AppointmentService();
+    private final AppointmentService appointmentService = new AppointmentService();
 
     @FXML
     public void initialize() {

@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.User;
 import java.util.List;
 
 public class UserService {
-    private UserDAO userDAO = new UserDAO();
+    private final UserDAO userDAO = new UserDAO();
 
     public String addUser(String username, String password, String roleId, String firstName, String lastName, String email) throws Exception {
         return userDAO.insertUser(username, password, roleId, firstName, lastName, email);

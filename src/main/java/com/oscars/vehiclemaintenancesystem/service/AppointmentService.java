@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class AppointmentService {
-    private AppointmentDAO appointmentDAO = new AppointmentDAO();
+    private final AppointmentDAO appointmentDAO = new AppointmentDAO();
 
     public String scheduleAppointment(String vehicleId, String serviceId, String packageId, String mechanicId, Date appointmentDate, String notes) throws Exception {
         return appointmentDAO.insertAppointment(vehicleId, serviceId, packageId, mechanicId, appointmentDate, notes);

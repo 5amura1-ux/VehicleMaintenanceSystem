@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.ServiceCategory;
 import java.util.List;
 
 public class ServiceCategoryService {
-    private ServiceCategoryDAO serviceCategoryDAO = new ServiceCategoryDAO();
+    private final ServiceCategoryDAO serviceCategoryDAO = new ServiceCategoryDAO();
 
     public String addServiceCategory(String categoryName, String description) throws Exception {
         return serviceCategoryDAO.insertServiceCategory(categoryName, description);

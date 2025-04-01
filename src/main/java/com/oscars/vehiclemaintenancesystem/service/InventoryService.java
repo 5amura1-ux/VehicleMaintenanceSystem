@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.InventoryItem;
 import java.util.List;
 
 public class InventoryService {
-    private InventoryDAO inventoryDAO = new InventoryDAO();
+    private final InventoryDAO inventoryDAO = new InventoryDAO();
 
     public String addInventoryItem(String itemName, int quantity, int lowStockThreshold, double unitPrice) throws Exception {
         return inventoryDAO.insertInventory(itemName, quantity, lowStockThreshold, unitPrice);

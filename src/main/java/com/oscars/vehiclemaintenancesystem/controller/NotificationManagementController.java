@@ -23,7 +23,7 @@ public class NotificationManagementController {
     @FXML private TableColumn<Notification, java.util.Date> createdDateColumn;
     @FXML private VBox sidebar;
 
-    private NotificationService notificationService = new NotificationService();
+    private final NotificationService notificationService = new NotificationService();
 
     private static final double WINDOW_WIDTH = 1000;
     private static final double WINDOW_HEIGHT = 700;

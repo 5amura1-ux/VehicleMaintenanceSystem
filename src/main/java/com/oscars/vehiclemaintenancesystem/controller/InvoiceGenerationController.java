@@ -21,8 +21,8 @@ public class InvoiceGenerationController {
     @FXML private Label invoiceDetailsLabel;
     @FXML private VBox sidebar;
 
-    private AppointmentService appointmentService = new AppointmentService();
-    private PaymentService paymentService = new PaymentService();
+    private final AppointmentService appointmentService = new AppointmentService();
+    private final PaymentService paymentService = new PaymentService();
 
     @FXML
     public void initialize() {

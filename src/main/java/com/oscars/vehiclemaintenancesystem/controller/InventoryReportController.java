@@ -25,7 +25,7 @@ public class InventoryReportController {
     @FXML private TableColumn<InventoryItem, java.util.Date> lastUpdatedColumn;
     @FXML private VBox sidebar;
 
-    private InventoryService inventoryService = new InventoryService();
+    private final InventoryService inventoryService = new InventoryService();
 
     @FXML
     public void initialize() {

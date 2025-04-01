@@ -24,10 +24,10 @@ public class DashboardController {
     @FXML private Label totalRevenueLabel;
     @FXML private VBox sidebar;
 
-    private CustomerService customerService = new CustomerService();
-    private VehicleService vehicleService = new VehicleService();
-    private AppointmentService appointmentService = new AppointmentService();
-    private PaymentService paymentService = new PaymentService();
+    private final CustomerService customerService = new CustomerService();
+    private final VehicleService vehicleService = new VehicleService();
+    private final AppointmentService appointmentService = new AppointmentService();
+    private final PaymentService paymentService = new PaymentService();
 
     private static final double WINDOW_WIDTH = 1000;
     private static final double WINDOW_HEIGHT = 700;

@@ -27,7 +27,7 @@ public class CustomerController {
     @FXML private TableColumn<Customer, String> emailColumn;
     @FXML private TableColumn<Customer, String> addressColumn;
 
-    private CustomerService customerService = new CustomerService();
+    private final CustomerService customerService = new CustomerService();
 
     @FXML
     public void initialize() {

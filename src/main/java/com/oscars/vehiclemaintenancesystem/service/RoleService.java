@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.Role;
 import java.util.List;
 
 public class RoleService {
-    private RoleDAO roleDAO = new RoleDAO();
+    private final RoleDAO roleDAO = new RoleDAO();
 
     public String addRole(String roleName) throws Exception {
         return roleDAO.insertRole(roleName);

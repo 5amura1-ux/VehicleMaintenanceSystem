@@ -30,7 +30,7 @@ public class VehicleSearchController {
     @FXML private TableColumn<Vehicle, String> colorColumn;
     @FXML private VBox sidebar;
 
-    private VehicleService vehicleService = new VehicleService();
+    private final VehicleService vehicleService = new VehicleService();
 
     private static final double WINDOW_WIDTH = 800;
     private static final double WINDOW_HEIGHT = 600;

@@ -6,7 +6,7 @@ import com.oscars.vehiclemaintenancesystem.model.Service;
 import java.util.List;
 
 public class ServiceService {
-    private ServiceDAO serviceDAO = new ServiceDAO();
+    private final ServiceDAO serviceDAO = new ServiceDAO();
 
     public String addService(String categoryId, String serviceName, String description, double baseCost, int estimatedTime) throws Exception {
         return serviceDAO.insertService(categoryId, serviceName, description, baseCost, estimatedTime);

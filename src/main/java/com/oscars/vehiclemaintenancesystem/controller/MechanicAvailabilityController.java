@@ -30,7 +30,7 @@ public class MechanicAvailabilityController {
     @FXML private TableColumn<Appointment, String> statusColumn;
     @FXML private VBox sidebar;
 
-    private AppointmentService appointmentService = new AppointmentService();
+    private final AppointmentService appointmentService = new AppointmentService();
 
     private static final double WINDOW_WIDTH = 800;
     private static final double WINDOW_HEIGHT = 600;

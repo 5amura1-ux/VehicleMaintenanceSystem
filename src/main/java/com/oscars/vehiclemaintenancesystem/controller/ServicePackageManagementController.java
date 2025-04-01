@@ -23,7 +23,7 @@ public class ServicePackageManagementController {
     @FXML private TableColumn<ServicePackage, String> descriptionColumn;
     @FXML private TableColumn<ServicePackage, Double> discountPriceColumn;
 
-    private ServicePackageService servicePackageService = new ServicePackageService();
+    private final ServicePackageService servicePackageService = new ServicePackageService();
 
     @FXML
     public void initialize() {

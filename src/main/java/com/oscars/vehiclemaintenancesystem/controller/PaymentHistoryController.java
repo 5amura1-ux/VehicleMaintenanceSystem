@@ -22,7 +22,7 @@ public class PaymentHistoryController {
     @FXML private TableColumn<Payment, String> paymentMethodColumn;
     @FXML private TableColumn<Payment, String> paymentStatusColumn;
 
-    private PaymentService paymentService = new PaymentService();
+    private final PaymentService paymentService = new PaymentService();
 
     @FXML
     public void initialize() {

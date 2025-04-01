@@ -24,7 +24,7 @@ public class ErrorLogController {
     @FXML private TableColumn<ErrorLog, java.util.Date> timestampColumn;
     @FXML private VBox sidebar;
 
-    private ErrorLogService errorLogService = new ErrorLogService();
+    private final ErrorLogService errorLogService = new ErrorLogService();
 
     @FXML
     public void initialize() {

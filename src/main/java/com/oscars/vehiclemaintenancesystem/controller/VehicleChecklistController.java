@@ -29,7 +29,7 @@ public class VehicleChecklistController {
     @FXML private TableColumn<Appointment, String> statusColumn;
     @FXML private VBox sidebar;
 
-    private AppointmentService appointmentService = new AppointmentService();
+    private final AppointmentService appointmentService = new AppointmentService();
 
     private static final double WINDOW_WIDTH = 1000;
     private static final double WINDOW_HEIGHT = 700;

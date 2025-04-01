@@ -31,7 +31,7 @@ public class VehicleController {
     @FXML private TableColumn<Vehicle, String> licensePlateColumn;
     @FXML private TableColumn<Vehicle, String> colorColumn;
 
-    private VehicleService vehicleService = new VehicleService();
+    private final VehicleService vehicleService = new VehicleService();
 
     @FXML
     public void initialize() {

@@ -25,7 +25,7 @@ public class AuditLogController {
     @FXML private TableColumn<AuditLog, java.util.Date> timestampColumn;
     @FXML private VBox sidebar;
 
-    private AuditLogService auditLogService = new AuditLogService();
+    private final AuditLogService auditLogService = new AuditLogService();
 
     @FXML
     public void initialize() {

@@ -21,10 +21,10 @@ public class SalesRepDashboardController {
     @FXML private Label totalAppointmentsLabel;
     @FXML private Label totalRevenueLabel;
 
-    private CustomerService customerService = new CustomerService();
-    private VehicleService vehicleService = new VehicleService();
-    private AppointmentService appointmentService = new AppointmentService();
-    private PaymentService paymentService = new PaymentService();
+    private final CustomerService customerService = new CustomerService();
+    private final VehicleService vehicleService = new VehicleService();
+    private final AppointmentService appointmentService = new AppointmentService();
+    private final PaymentService paymentService = new PaymentService();
 
     @FXML
     public void initialize() {

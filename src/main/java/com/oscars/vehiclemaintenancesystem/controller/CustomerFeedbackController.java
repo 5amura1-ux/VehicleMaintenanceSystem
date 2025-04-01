@@ -28,7 +28,7 @@ public class CustomerFeedbackController {
     @FXML private TableColumn<Feedback, Integer> ratingColumn;
     @FXML private VBox sidebar;
 
-    private FeedbackService feedbackService = new FeedbackService();
+    private final FeedbackService feedbackService = new FeedbackService();
 
     @FXML
     public void initialize() {
