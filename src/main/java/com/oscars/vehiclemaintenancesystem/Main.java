@@ -1,31 +1,42 @@
 package com.oscars.vehiclemaintenancesystem;
 
+import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class Main extends Application {
-    private static final double WINDOW_WIDTH = 1000;
-    private static final double WINDOW_HEIGHT = 700;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) throws IOException {
         System.out.println("Welcome to Vehicle Maintenance System");
-        java.net.URL fxmlLocation = getClass().getResource("/Login.fxml");
-        System.out.println("FXML Location: " + fxmlLocation); // Will print null if not found
-        if (fxmlLocation == null) {
-            throw new RuntimeException("Unable to find Login.fxml");
-        }
-        FXMLLoader loader = new FXMLLoader(fxmlLocation);
+
+        // Load the initial FXML file (Login.fxml)
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));
+        System.out.println("FXML Location: " + getClass().getResource("/Login.fxml"));
         System.out.println("Login page loading");
         Parent root = loader.load();
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Vehicle Maintenance System");
-        primaryStage.show();
         System.out.println("Login page loaded");
+
+        // Create the scene with default dimensions
+        Scene scene = new Scene(root, WindowConfig.DEFAULT_WINDOW_WIDTH, WindowConfig.DEFAULT_WINDOW_HEIGHT);
+
+        // Set the stage title
+        primaryStage.setTitle("Vehicle Maintenance System - Login");
+
+        // Apply window size constraints
+        primaryStage.setMinWidth(WindowConfig.MIN_WINDOW_WIDTH);
+        primaryStage.setMinHeight(WindowConfig.MIN_WINDOW_HEIGHT);
+        primaryStage.setMaxWidth(WindowConfig.MAX_WINDOW_WIDTH);
+        primaryStage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
+
+        // Set the scene and show the stage
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

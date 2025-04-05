@@ -1,20 +1,19 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Payment;
+import com.oscars.vehiclemaintenancesystem.model.User;
 import com.oscars.vehiclemaintenancesystem.service.AppointmentService;
 import com.oscars.vehiclemaintenancesystem.service.CustomerService;
 import com.oscars.vehiclemaintenancesystem.service.PaymentService;
+import com.oscars.vehiclemaintenancesystem.service.UserService;
 import com.oscars.vehiclemaintenancesystem.service.VehicleService;
+import com.oscars.vehiclemaintenancesystem.util.SidebarUtil;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
-
-import java.io.IOException;
 
 public class DashboardController {
     @FXML private Label welcomeLabel;
@@ -28,14 +27,23 @@ public class DashboardController {
     private final VehicleService vehicleService = new VehicleService();
     private final AppointmentService appointmentService = new AppointmentService();
     private final PaymentService paymentService = new PaymentService();
-
-    private static final double WINDOW_WIDTH = 1000;
-    private static final double WINDOW_HEIGHT = 700;
+    private final UserService userService = new UserService();
 
     @FXML
     public void initialize() {
         String role = LoginController.getLoggedInUserRole();
-        String username = LoginController.getLoggedInUser();
+        String userId = LoginController.getLoggedInUser(); // Now returns user_id
+
+        // Fetch the username using the user_id
+        String username = "Unknown";
+        try {
+            User user = userService.getUserById(userId);
+            if (user != null) {
+                username = user.getUsername();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Set welcome message based on role
         switch (role) {
@@ -52,8 +60,11 @@ public class DashboardController {
                 welcomeLabel.setText("Welcome, " + username);
         }
 
-        // Populate the sidebar based on role
-        populateSidebar(role);
+        // Delay sidebar population until the Scene is fully constructed
+        Platform.runLater(() -> {
+            Stage stage = (Stage) sidebar.getScene().getWindow();
+            SidebarUtil.populateSidebar(sidebar, role, stage);
+        });
 
         // Display statistics based on role
         try {
@@ -72,7 +83,7 @@ public class DashboardController {
                 totalRevenueLabel.setText("Total Revenue: $" + String.format("%.2f", totalRevenue));
             } else if (role.equals("ROLE00003")) {
                 // Mechanic only sees their appointments
-                long totalAppointments = appointmentService.getAppointmentsByMechanic(username).size();
+                long totalAppointments = appointmentService.getAppointmentsByMechanic(userId).size();
                 totalAppointmentsLabel.setText("Total Appointments: " + totalAppointments);
 
                 // Hide other stats for Mechanic
@@ -85,85 +96,8 @@ public class DashboardController {
         }
     }
 
-    private void populateSidebar(String role) {
-        sidebar.getChildren().clear(); // Clear any existing buttons
-
-        // Add buttons based on role
-        switch (role) {
-            case "ROLE00004": // Admin
-                addButton("👥 Search Customers", "CustomerSearchView.fxml");
-                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("📅 Appointment History", "AppointmentHistory.fxml");
-                addButton("💳 Payments", "PaymentView.fxml");
-                addButton("📦 Inventory", "InventoryView.fxml");
-                addButton("📊 Inventory Report", "InventoryReportView.fxml");
-                addButton("👤 Users", "UserProfileView.fxml");
-                addButton("🔔 Notifications", "NotificationView.fxml");
-                addButton("⚙️ Services", "ServiceManagementView.fxml");
-                addButton("📦 Packages", "ServicePackageManagementView.fxml");
-                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
-                addButton("📜 Audit Log", "AuditLogView.fxml");
-                addButton("❗ Error Log", "ErrorLogView.fxml");
-                addButton("⚙️ System Settings", "SystemSettingsView.fxml");
-                break;
-            case "ROLE00003": // Mechanic
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
-                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
-                addButton("📋 Vehicle Checklist", "VehicleChecklistView.fxml");
-                break;
-            case "ROLE00005": // SalesRep
-                addButton("👥 Search Customers", "CustomerSearchView.fxml");
-                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("📅 Appointment History", "AppointmentHistory.fxml");
-                addButton("💳 Payments", "PaymentView.fxml");
-                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
-                addButton("📄 Invoice Generation", "InvoiceGenerationView.fxml");
-                break;
-        }
-
-        // Add Logout button for all roles
-        Button logoutButton = new Button("🚪 Logout");
-        logoutButton.setStyle("-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
-        logoutButton.setOnAction(this::logout);
-        sidebar.getChildren().add(logoutButton);
-    }
-
-    private void addButton(String text, String fxmlFile) {
-        Button button = new Button(text);
-        button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
-        button.setOnAction(event -> {
-            try {
-                loadView(fxmlFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading view: " + e.getMessage());
-                alert.showAndWait();
-            }
-        });
-        sidebar.getChildren().add(button);
-    }
-
-    private void loadView(String fxmlFile) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
-        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        stage.setScene(scene);
-        stage.setTitle("Vehicle Maintenance System - " + fxmlFile.replace(".fxml", ""));
-    }
-
     @FXML
-    private void logout(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
-            Stage stage = (Stage) welcomeLabel.getScene().getWindow();
-            Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-            stage.setScene(scene);
-            stage.setTitle("Vehicle Maintenance System - Login");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void logout() {
+        // Logout functionality is handled by SidebarUtil
     }
 }

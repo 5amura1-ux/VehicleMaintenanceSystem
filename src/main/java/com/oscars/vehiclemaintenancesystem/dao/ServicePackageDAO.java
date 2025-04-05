@@ -13,7 +13,7 @@ public class ServicePackageDAO {
             Transaction tx = session.beginTransaction();
             ServicePackage servicePackage = new ServicePackage();
             servicePackage.setPackageName(packageName);
-            servicePackage.setDescription(description);
+            servicePackage.setDescription(description); // This should now work
             servicePackage.setDiscountPrice(discountPrice);
             session.save(servicePackage);
             tx.commit();

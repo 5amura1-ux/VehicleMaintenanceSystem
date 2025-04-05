@@ -13,12 +13,13 @@
             <Label text="📜 Audit Log" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
             <TableView fx:id="auditLogTable" style="-fx-pref-height: 400;">
                 <columns>
-                    <TableColumn text="Log ID" fx:id="logIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Table Name" fx:id="tableNameColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Action" fx:id="actionColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="User ID" fx:id="userIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Details" fx:id="detailsColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Timestamp" fx:id="timestampColumn" style="-fx-alignment: CENTER;"/>
+                    <TableColumn text="Log ID" fx:id="logIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Table Name" fx:id="tableNameColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Action" fx:id="actionColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="User ID" fx:id="userIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="User Name" fx:id="userNameColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Details" fx:id="detailsColumn" style="-fx-alignment: CENTER;" prefWidth="200"/>
+                    <TableColumn text="Timestamp" fx:id="timestampColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
                 </columns>
             </TableView>
         </VBox>

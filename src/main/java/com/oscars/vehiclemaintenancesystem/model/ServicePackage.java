@@ -13,18 +13,49 @@ public class ServicePackage {
     private String packageName;
 
     @Column(name = "description")
-    private String description;
+    private String description; // Added description field
 
     @Column(name = "discount_price")
     private double discountPrice;
 
-    // Getters and setters
-    public String getPackageId() { return packageId; }
-    public void setPackageId(String packageId) { this.packageId = packageId; }
-    public String getPackageName() { return packageName; }
-    public void setPackageName(String packageName) { this.packageName = packageName; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    public double getDiscountPrice() { return discountPrice; }
-    public void setDiscountPrice(double discountPrice) { this.discountPrice = discountPrice; }
+    // Default constructor
+    public ServicePackage() {}
+
+    // Getters and Setters
+    public String getPackageId() {
+        return packageId;
+    }
+
+    public void setPackageId(String packageId) {
+        this.packageId = packageId;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    @Override
+    public String toString() {
+        return packageName; // Display name in ComboBox
+    }
 }

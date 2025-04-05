@@ -11,8 +11,8 @@
             <PasswordField fx:id="passwordField" promptText="Password" prefWidth="200" maxWidth="200"/>
             <HBox spacing="10" alignment="CENTER">
                 <Button text="Login" onAction="#login" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
-                <Button text="Close" onAction="#handleClose" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
-                <Button text="About" onAction="#handleAbout" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>
+<!--                <Button text="Close" onAction="#handleClose" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>-->
+<!--                <Button text="About" onAction="#handleAbout" style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-size: 14; -fx-pref-width: 100;"/>-->
             </HBox>
             <Label fx:id="errorLabel" text=" " style="-fx-text-fill: #e74c3c; -fx-font-size: 12;"/>
         </VBox>

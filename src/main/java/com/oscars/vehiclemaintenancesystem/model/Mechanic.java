@@ -3,11 +3,17 @@ package com.oscars.vehiclemaintenancesystem.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Customers")
-public class Customer {
+@Table(name = "Users")
+public class Mechanic {
     @Id
-    @Column(name = "customer_id")
-    private String customerId;
+    @Column(name = "user_id")
+    private String userId;
+
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
 
     @Column(name = "first_name")
     private String firstName;
@@ -15,28 +21,41 @@ public class Customer {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
     @Column(name = "email")
     private String email;
 
-    @Column(name = "address")
-    private String address;
+    @Column(name = "role_id")
+    private String roleId;
 
     @Column(name = "created_date")
     private java.util.Date createdDate;
 
     // Default constructor
-    public Customer() {}
+    public Mechanic() {}
 
     // Getters and Setters
-    public String getCustomerId() {
-        return customerId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getFirstName() {
@@ -55,14 +74,6 @@ public class Customer {
         this.lastName = lastName;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -71,12 +82,12 @@ public class Customer {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     public java.util.Date getCreatedDate() {
@@ -85,5 +96,10 @@ public class Customer {
 
     public void setCreatedDate(java.util.Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName; // Display full name in ComboBox
     }
 }

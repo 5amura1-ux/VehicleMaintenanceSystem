@@ -2,6 +2,9 @@ package com.oscars.vehiclemaintenancesystem.service;
 
 import com.oscars.vehiclemaintenancesystem.dao.ServiceDAO;
 import com.oscars.vehiclemaintenancesystem.model.Service;
+import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -17,6 +20,13 @@ public class ServiceService {
     }
 
     public List<Service> getAllServices() {
-        return serviceDAO.getAllServices();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Service> query = session.createQuery("FROM Service", Service.class);
+            return query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error retrieving services: " + e.getMessage());
+        }
     }
+
 }

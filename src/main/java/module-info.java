@@ -18,5 +18,8 @@ module com.oscars.vehiclemaintenancesystem {
     opens com.oscars.vehiclemaintenancesystem.controller to javafx.fxml;
 
     exports com.oscars.vehiclemaintenancesystem;
+    exports com.oscars.vehiclemaintenancesystem.controller;
+    exports com.oscars.vehiclemaintenancesystem.model;
+    exports com.oscars.vehiclemaintenancesystem.service;
 
 }

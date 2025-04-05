@@ -1,7 +1,9 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.User;
 import com.oscars.vehiclemaintenancesystem.service.UserService;
+import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +16,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,16 +27,12 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
 
-    private final UserService userService = new UserService();
-    private static String loggedInUser;
+    private UserService userService = new UserService();
+    private static String loggedInUserId;
     private static String loggedInUserRole;
 
-    // Define standard window size
-    private static final double WINDOW_WIDTH = 1000;
-    private static final double WINDOW_HEIGHT = 700;
-
     public static String getLoggedInUser() {
-        return loggedInUser;
+        return loggedInUserId;
     }
 
     public static String getLoggedInUserRole() {
@@ -44,37 +45,66 @@ public class LoginController {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
+            // Validate input fields
             if (username.isEmpty() || password.isEmpty()) {
                 errorLabel.setText("Please enter both username and password");
                 return;
             }
 
-            // Removed encryption, compare raw password directly
+            // Authenticate user by comparing raw password
             List<User> users = userService.getAllUsers();
             User authenticatedUser = null;
             for (User user : users) {
-                if (user.getUsername().equals(username) && user.getPassword().equals(password) && user.getStatus().equals("Active")) {
-                    authenticatedUser = user;
-                    break;
+                if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                    if (user.getStatus().equals("Active")) {
+                        authenticatedUser = user;
+                        break;
+                    } else {
+                        errorLabel.setText("User account is inactive");
+                        return;
+                    }
                 }
             }
 
             if (authenticatedUser != null) {
-                loggedInUser = authenticatedUser.getUsername();
+                loggedInUserId = authenticatedUser.getUserId();
                 loggedInUserRole = authenticatedUser.getRoleId();
+
+                // Set the user ID in the database context
+                setUserIdInContext(authenticatedUser.getUserId());
 
                 // Load the unified Dashboard.fxml for all roles
                 Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Dashboard.fxml")));
                 Stage stage = (Stage) usernameField.getScene().getWindow();
-                Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+                Scene scene = new Scene(root, WindowConfig.DEFAULT_WINDOW_WIDTH, WindowConfig.DEFAULT_WINDOW_HEIGHT);
                 stage.setScene(scene);
                 stage.setTitle("Vehicle Maintenance System - Dashboard");
+
+                // Apply window size constraints
+                stage.setMinWidth(WindowConfig.MIN_WINDOW_WIDTH);
+                stage.setMinHeight(WindowConfig.MIN_WINDOW_HEIGHT);
+                stage.setMaxWidth(WindowConfig.MAX_WINDOW_WIDTH);
+                stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
             } else {
-                errorLabel.setText("Invalid username or password, or user is inactive");
+                errorLabel.setText("Invalid username or password");
             }
         } catch (Exception e) {
             e.printStackTrace();
             errorLabel.setText("Error during login: " + e.getMessage());
+        }
+    }
+
+    private void setUserIdInContext(String userId) {
+        try (Connection conn = HibernateUtil.getSessionFactory().getSessionFactoryOptions()
+                .getServiceRegistry().getService(org.hibernate.engine.jdbc.connections.spi.ConnectionProvider.class)
+                .getConnection()) {
+            CallableStatement stmt = conn.prepareCall("{CALL VEHICLE_MAINTENANCE_PKG.SET_USER_ID(?)}");
+            stmt.setString(1, userId);
+            stmt.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error setting user context: " + e.getMessage());
+            alert.showAndWait();
         }
     }
 

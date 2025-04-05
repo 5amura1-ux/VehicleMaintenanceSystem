@@ -2,6 +2,8 @@ package com.oscars.vehiclemaintenancesystem.service;
 
 import com.oscars.vehiclemaintenancesystem.dao.UserDAO;
 import com.oscars.vehiclemaintenancesystem.model.User;
+import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
+import org.hibernate.Session;
 
 import java.util.List;
 
@@ -22,6 +24,14 @@ public class UserService {
 
     public List<User> getUsersByRole(String roleId) throws Exception {
         return userDAO.getUsersByRole(roleId);
+    }
+    public User getUserById(String userId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(User.class, userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error retrieving user by ID " + userId + ": " + e.getMessage());
+        }
     }
 
     public List<User> getAllUsers() {

@@ -1,7 +1,10 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.AuditLog;
 import com.oscars.vehiclemaintenancesystem.service.AuditLogService;
+import com.oscars.vehiclemaintenancesystem.util.SidebarUtil;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +14,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
 import java.io.IOException;
+import java.util.List;
 
 public class AuditLogController {
     @FXML private TableView<AuditLog> auditLogTable;
@@ -21,6 +24,7 @@ public class AuditLogController {
     @FXML private TableColumn<AuditLog, String> tableNameColumn;
     @FXML private TableColumn<AuditLog, String> actionColumn;
     @FXML private TableColumn<AuditLog, String> userIdColumn;
+    @FXML private TableColumn<AuditLog, String> userNameColumn; // New column for user name
     @FXML private TableColumn<AuditLog, String> detailsColumn;
     @FXML private TableColumn<AuditLog, java.util.Date> timestampColumn;
     @FXML private VBox sidebar;
@@ -46,101 +50,50 @@ public class AuditLogController {
         tableNameColumn.setCellValueFactory(new PropertyValueFactory<>("tableName"));
         actionColumn.setCellValueFactory(new PropertyValueFactory<>("action"));
         userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        userNameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
         detailsColumn.setCellValueFactory(new PropertyValueFactory<>("details"));
         timestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
 
-        // Populate the sidebar based on role
-        populateSidebar(LoginController.getLoggedInUserRole());
+        // Ensure columns are visible
+        auditLogTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Load audit logs
         loadAuditLogs();
-    }
 
-    private void populateSidebar(String role) {
-        sidebar.getChildren().clear(); // Clear any existing buttons
-
-        // Add buttons based on role
-        switch (role) {
-            case "ROLE00004": // Admin
-                addButton("👥 Search Customers", "CustomerSearchView.fxml");
-                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("📅 Appointments History", "AppointmentHistoryView.fxml");
-                addButton("💳 Payments", "PaymentView.fxml");
-                addButton("📦 Inventory", "InventoryView.fxml");
-                addButton("👤 Users", "UserView.fxml");
-                addButton("🔔 Notifications", "NotificationView.fxml");
-                addButton("⚙️ Services", "ServiceManagementView.fxml");
-                addButton("📦 Packages", "ServicePackageManagementView.fxml");
-                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
-                addButton("📜 Audit Log", "AuditLogView.fxml");
-                addButton("❗ Error Log", "ErrorLogView.fxml");
-                addButton("⚙️ System Settings", "SystemSettingsView.fxml");
-                break;
-            case "ROLE00003": // Mechanic
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
-                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
-                addButton("📋 Vehicle Checklist", "VehicleChecklistView.fxml");
-                break;
-            case "ROLE00005": // SalesRep
-                addButton("👥 Search Customers", "CustomerSearchView.fxml");
-                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("📅 Appointments History", "AppointmentHistoryView.fxml");
-                addButton("💳 Payments", "PaymentView.fxml");
-                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
-                addButton("📄 Invoice Generation", "InvoiceGenerationView.fxml");
-                break;
-        }
-
-        // Add Logout button for all roles
-        Button logoutButton = new Button("🚪 Logout");
-        logoutButton.setStyle("-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
-        logoutButton.setOnAction(this::logout);
-        sidebar.getChildren().add(logoutButton);
-    }
-
-    private void addButton(String text, String fxmlFile) {
-        Button button = new Button(text);
-        button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
-        if (text.equals("📜 Audit Log")) {
-            button.setStyle("-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
-        }
-        button.setOnAction(event -> {
-            try {
-                loadView(fxmlFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading view: " + e.getMessage());
-                alert.showAndWait();
-            }
+        // Delay sidebar population until the Scene is fully constructed
+        Platform.runLater(() -> {
+            Stage stage = (Stage) sidebar.getScene().getWindow();
+            SidebarUtil.populateSidebar(sidebar, LoginController.getLoggedInUserRole(), stage);
         });
-        sidebar.getChildren().add(button);
     }
 
     private void loadAuditLogs() {
         try {
-            auditLogTable.setItems(FXCollections.observableArrayList(auditLogService.getAllAuditLogs()));
+            List<AuditLog> auditLogs = auditLogService.getAllAuditLogs();
+            auditLogTable.setItems(FXCollections.observableArrayList(auditLogs));
         } catch (Exception e) {
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading audit logs: " + e.getMessage());
+            alert.showAndWait();
         }
     }
 
     private void loadView(String fxmlFile) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
         Stage stage = (Stage) auditLogTable.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        Scene scene = new Scene(root, WindowConfig.DEFAULT_WINDOW_WIDTH, WindowConfig.DEFAULT_WINDOW_HEIGHT);
+        stage.setScene(scene);
+        stage.setTitle("Vehicle Maintenance System - " + fxmlFile.replace(".fxml", ""));
+
+        // Apply window size constraints
+        stage.setMinWidth(WindowConfig.MIN_WINDOW_WIDTH);
+        stage.setMinHeight(WindowConfig.MIN_WINDOW_HEIGHT);
+        stage.setMaxWidth(WindowConfig.MAX_WINDOW_WIDTH);
+        stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
     }
 
     @FXML
-    private void logout(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
-            Stage stage = (Stage) auditLogTable.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void logout() {
+        // Logout functionality is handled by SidebarUtil
     }
 }

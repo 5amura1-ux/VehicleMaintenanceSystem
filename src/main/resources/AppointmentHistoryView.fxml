@@ -13,14 +13,19 @@
             <Label text="📅 Appointment History" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
             <TableView fx:id="appointmentTable" style="-fx-pref-height: 400;">
                 <columns>
-                    <TableColumn text="Appointment ID" fx:id="appointmentIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Vehicle ID" fx:id="vehicleIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Service ID" fx:id="serviceIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Package ID" fx:id="packageIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Mechanic ID" fx:id="mechanicIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Appointment Date" fx:id="appointmentDateColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Status" fx:id="statusColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Notes" fx:id="notesColumn" style="-fx-alignment: CENTER;"/>
+                    <TableColumn text="Appointment ID" fx:id="appointmentIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Vehicle ID" fx:id="vehicleIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Vehicle Make" fx:id="vehicleMakeColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Vehicle Model" fx:id="vehicleModelColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Service ID" fx:id="serviceIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Service Name" fx:id="serviceNameColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Package ID" fx:id="packageIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Package Name" fx:id="packageNameColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Mechanic ID" fx:id="mechanicIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Mechanic Name" fx:id="mechanicNameColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Appointment Date" fx:id="appointmentDateColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Status" fx:id="statusColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Notes" fx:id="notesColumn" style="-fx-alignment: CENTER;" prefWidth="150"/>
                 </columns>
             </TableView>
         </VBox>

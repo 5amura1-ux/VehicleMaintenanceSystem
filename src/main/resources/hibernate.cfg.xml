@@ -29,5 +29,6 @@
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Notification"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.AuditLog"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.ErrorLog"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.Mechanic"/>
     </session-factory>
 </hibernate-configuration>
