@@ -3,7 +3,7 @@ package com.oscars.vehiclemaintenancesystem.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Service_Packages")
+@Table(name = "Service_Packages", schema = "OSCARS")
 public class ServicePackage {
     @Id
     @Column(name = "package_id")
@@ -13,10 +13,10 @@ public class ServicePackage {
     private String packageName;
 
     @Column(name = "description")
-    private String description; // Added description field
+    private String description;
 
     @Column(name = "discount_price")
-    private double discountPrice;
+    private double discountPrice; // Revert to double
 
     // Default constructor
     public ServicePackage() {}

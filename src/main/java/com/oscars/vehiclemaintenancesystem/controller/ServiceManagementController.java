@@ -1,15 +1,18 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Service;
 import com.oscars.vehiclemaintenancesystem.service.ServiceService;
+import com.oscars.vehiclemaintenancesystem.util.SidebarUtil;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -27,6 +30,7 @@ public class ServiceManagementController {
     @FXML private TableColumn<Service, String> descriptionColumn;
     @FXML private TableColumn<Service, Double> baseCostColumn;
     @FXML private TableColumn<Service, Integer> estimatedTimeColumn;
+    @FXML private VBox sidebar;
 
     private final ServiceService serviceService = new ServiceService();
 
@@ -46,7 +50,7 @@ public class ServiceManagementController {
                         fxmlFile = "SalesRepDashboard.fxml";
                         break;
                     default:
-                        fxmlFile = "LoginView.fxml";
+                        fxmlFile = "Login.fxml";
                 }
                 loadView(fxmlFile);
             } catch (IOException e) {
@@ -55,13 +59,22 @@ public class ServiceManagementController {
             return;
         }
 
+        // Set up table columns
         serviceIdColumn.setCellValueFactory(new PropertyValueFactory<>("serviceId"));
         categoryIdColumn.setCellValueFactory(new PropertyValueFactory<>("categoryId"));
         serviceNameColumn.setCellValueFactory(new PropertyValueFactory<>("serviceName"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         baseCostColumn.setCellValueFactory(new PropertyValueFactory<>("baseCost"));
         estimatedTimeColumn.setCellValueFactory(new PropertyValueFactory<>("estimatedTime"));
+
+        // Load services
         loadServices();
+
+        // Populate the sidebar based on role
+        Platform.runLater(() -> {
+            Stage stage = (Stage) sidebar.getScene().getWindow();
+            SidebarUtil.populateSidebar(sidebar, LoginController.getLoggedInUserRole(), stage);
+        });
     }
 
     @FXML
@@ -95,7 +108,6 @@ public class ServiceManagementController {
 
     @FXML
     public void updateService() {
-        // Implementation for updating a service (requires a PL/SQL procedure like UPDATE_SERVICE)
         Alert alert = new Alert(Alert.AlertType.WARNING, "Update Service functionality not implemented yet");
         alert.showAndWait();
     }
@@ -138,159 +150,26 @@ public class ServiceManagementController {
         estimatedTimeField.clear();
     }
 
-    // Navigation methods (only accessible to Admins due to role check in initialize)
-    @FXML
-    public void showDashboard() throws IOException {
-        loadView("AdminDashboard.fxml");
-    }
+    private void loadView(String fxmlFile) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
+        Stage stage = (Stage) serviceTable.getScene().getWindow();
+        Scene scene = new Scene(root, WindowConfig.DEFAULT_WINDOW_WIDTH, WindowConfig.DEFAULT_WINDOW_HEIGHT);
+        stage.setScene(scene);
+        stage.setTitle("Vehicle Maintenance System - " + fxmlFile.replace(".fxml", ""));
 
-    @FXML
-    public void showCustomerView() throws IOException {
-        loadView("CustomerView.fxml");
-    }
-
-    @FXML
-    public void showVehicleView() throws IOException {
-        loadView("VehicleView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentView() throws IOException {
-        loadView("AppointmentView.fxml");
-    }
-
-    @FXML
-    public void showPaymentView() throws IOException {
-        loadView("PaymentView.fxml");
-    }
-
-    @FXML
-    public void showInventoryView() throws IOException {
-        loadView("InventoryView.fxml");
-    }
-
-    @FXML
-    public void showUserView() throws IOException {
-        loadView("UserView.fxml");
-    }
-
-    @FXML
-    public void showNotificationView() throws IOException {
-        loadView("NotificationView.fxml");
-    }
-
-    @FXML
-    public void showServiceManagementView() throws IOException {
-        loadView("ServiceManagementView.fxml");
-    }
-
-    @FXML
-    public void showServicePackageManagementView() throws IOException {
-        loadView("ServicePackageManagementView.fxml");
-    }
-
-    @FXML
-    public void showMechanicAvailabilityView() throws IOException {
-        loadView("MechanicAvailabilityView.fxml");
-    }
-
-    @FXML
-    public void showCustomerFeedbackView() throws IOException {
-        loadView("CustomerFeedbackView.fxml");
-    }
-
-    @FXML
-    public void showNotificationManagementView() throws IOException {
-        loadView("NotificationManagementView.fxml");
-    }
-
-    @FXML
-    public void showInvoiceGenerationView() throws IOException {
-        loadView("InvoiceGenerationView.fxml");
-    }
-
-    @FXML
-    public void showVehicleChecklistView() throws IOException {
-        loadView("VehicleChecklistView.fxml");
-    }
-
-    @FXML
-    public void showServiceCategoryManagementView() throws IOException {
-        loadView("ServiceCategoryManagementView.fxml");
-    }
-
-    @FXML
-    public void showUserActivityLogView() throws IOException {
-        loadView("UserActivityLogView.fxml");
-    }
-
-    @FXML
-    public void showSystemSettingsView() throws IOException {
-        loadView("SystemSettingsView.fxml");
-    }
-
-    @FXML
-    public void showDashboardAnalyticsView() throws IOException {
-        loadView("DashboardAnalyticsView.fxml");
-    }
-
-    @FXML
-    public void showAuditLogView() throws IOException {
-        loadView("AuditLogView.fxml");
-    }
-
-    @FXML
-    public void showErrorLogView() throws IOException {
-        loadView("ErrorLogView.fxml");
-    }
-
-    @FXML
-    public void showCustomerSearchView() throws IOException {
-        loadView("CustomerSearchView.fxml");
-    }
-
-    @FXML
-    public void showVehicleSearchView() throws IOException {
-        loadView("VehicleSearchView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentHistoryView() throws IOException {
-        loadView("AppointmentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showPaymentHistoryView() throws IOException {
-        loadView("PaymentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showInventoryReportView() throws IOException {
-        loadView("InventoryView.fxml");
-    }
-
-    @FXML
-    public void showUserProfileView() throws IOException {
-        loadView("UserProfileView.fxml");
+        // Apply window size constraints
+        stage.setMinWidth(WindowConfig.MIN_WINDOW_WIDTH);
+        stage.setMinHeight(WindowConfig.MIN_WINDOW_HEIGHT);
+        stage.setMaxWidth(WindowConfig.MAX_WINDOW_WIDTH);
+        stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
     }
 
     @FXML
     public void logout() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/LoginView.fxml"));
-            Stage stage = (Stage) serviceTable.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            loadView("Login.fxml");
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void loadView(String fxmlFile) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
-        Stage stage = (Stage) serviceTable.getScene().getWindow();
-        stage.setScene(new Scene(root));
-    }
-
-    public void showRoleManagementView(ActionEvent actionEvent) {
     }
 }

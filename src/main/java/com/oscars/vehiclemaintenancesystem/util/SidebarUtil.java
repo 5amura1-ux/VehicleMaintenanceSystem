@@ -27,33 +27,40 @@ public class SidebarUtil {
         switch (role) {
             case "ROLE00004": // Admin
                 addButton(sidebar, "🏠 Dashboard", "Dashboard.fxml", stage);
-                addButton(sidebar, "👥 Search Customers", "CustomerSearchView.fxml", stage);
-                addButton(sidebar, "🚗 Vehicles", "VehicleView.fxml", stage);
-                addButton(sidebar, "📅 Appointment History", "AppointmentHistoryView.fxml", stage);
-                addButton(sidebar, "💳 Payments", "PaymentView.fxml", stage);
+                addButton(sidebar, "👥 Customers", "CustomerSearchView.fxml", stage);
+                addButton(sidebar, "🚗 Vehicles", "VehicleSearchView.fxml", stage);
+                addButton(sidebar, "📅 Appointments", "AppointmentHistoryView.fxml", stage);
+//                addButton(sidebar, "💳 Payments", "PaymentView.fxml", stage);
+                addButton(sidebar, "💳 Payments", "PaymentHistoryView.fxml", stage);
                 addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
-                addButton(sidebar, "📊 Inventory Report", "InventoryReportView.fxml", stage);
-                addButton(sidebar, "👤 Users", "UserView.fxml", stage);
+//                addButton(sidebar, "📊 Inventory Report", "InventoryReportView.fxml", stage);
+                addButton(sidebar, "👤 Users", "UserProfileView.fxml", stage);
                 addButton(sidebar, "🔔 Notifications", "NotificationView.fxml", stage);
                 addButton(sidebar, "⚙️ Services", "ServiceManagementView.fxml", stage);
                 addButton(sidebar, "📦 Packages", "ServicePackageManagementView.fxml", stage);
                 addButton(sidebar, "🔧 Mechanic Availability", "MechanicAvailabilityView.fxml", stage);
                 addButton(sidebar, "📜 Audit Log", "AuditLogView.fxml", stage);
-                addButton(sidebar, "❗ Error Log", "ErrorLogView.fxml", stage);
-                addButton(sidebar, "⚙️ System Settings", "SystemSettingsView.fxml", stage);
+//                addButton(sidebar, "❗ Error Log", "ErrorLogView.fxml", stage);
+//                addButton(sidebar, "⚙️ System Settings", "SystemSettingsView.fxml", stage);
                 break;
             case "ROLE00003": // Mechanic
                 addButton(sidebar, "🏠 Dashboard", "MechanicDashboard.fxml", stage);
-                addButton(sidebar, "📅 Appointments", "AppointmentView.fxml", stage);
+                addButton(sidebar, "📅 Appointments", "AppointmentHistoryView.fxml", stage);
                 addButton(sidebar, "🔧 Mechanic Availability", "MechanicAvailabilityView.fxml", stage);
                 addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
+                addButton(sidebar, "🔔 Notifications", "NotificationView.fxml", stage);
+                addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
                 addButton(sidebar, "📋 Vehicle Checklist", "VehicleChecklistView.fxml", stage);
                 break;
             case "ROLE00005": // SalesRep
                 addButton(sidebar, "🏠 Dashboard", "Dashboard.fxml", stage);
                 addButton(sidebar, "👥 Book Appointment", "SalesRepBookingView.fxml", stage);
-                addButton(sidebar, "📅 Appointment History", "AppointmentHistoryView.fxml", stage);
-                addButton(sidebar, "💳 Payments", "PaymentView.fxml", stage);
+                addButton(sidebar, "👥 Customers", "CustomerSearchView.fxml", stage);
+                addButton(sidebar, "🚗 Vehicles", "VehicleSearchView.fxml", stage);
+                addButton(sidebar, "📅 Appointments", "AppointmentHistoryView.fxml", stage);
+//                addButton(sidebar, "💳 Payments", "PaymentView.fxml", stage);
+                addButton(sidebar, "💳 Payments", "PaymentHistoryView.fxml", stage);
+                addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
                 addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
                 addButton(sidebar, "📄 Invoice Generation", "InvoiceGenerationView.fxml", stage);
                 break;

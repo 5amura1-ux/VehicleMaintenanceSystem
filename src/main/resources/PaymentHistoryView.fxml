@@ -2,50 +2,63 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.PaymentHistoryController">
     <left>
-        <VBox spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
-            <Button text="🏠 Dashboard" onAction="#showDashboard" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <!-- Admin Menu -->
-             <Button text="🚗 Vehicles" onAction="#showVehicleView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📅 Appointments" onAction="#showAppointmentView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="💳 Payments" onAction="#showPaymentView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📦 Inventory" onAction="#showInventoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="👤 Users" onAction="#showUserView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="🔔 Notifications" onAction="#showNotificationView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="⚙️ Services" onAction="#showServiceManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📦 Packages" onAction="#showServicePackageManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="🔧 Mechanic Availability" onAction="#showMechanicAvailabilityView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📝 Feedback" onAction="#showCustomerFeedbackView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="🔔 Manage Notifications" onAction="#showNotificationManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📄 Invoice Generation" onAction="#showInvoiceGenerationView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📋 Vehicle Checklist" onAction="#showVehicleChecklistView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📋 Service Categories" onAction="#showServiceCategoryManagementView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📜 User Activity Log" onAction="#showUserActivityLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="⚙️ System Settings" onAction="#showSystemSettingsView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📊 Dashboard Analytics" onAction="#showDashboardAnalyticsView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📜 Audit Log" onAction="#showAuditLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="❗ Error Log" onAction="#showErrorLogView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="🔍 Customer Search" onAction="#showCustomerSearchView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="🔍 Vehicle Search" onAction="#showVehicleSearchView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📅 Appointment History" onAction="#showAppointmentHistoryView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="💳 Payment History" onAction="#showPaymentHistoryView" style="-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="📊 Inventory Report" onAction="#showInventoryReportView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="👤 Profile" onAction="#showUserProfileView" style="-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Button text="🚪 Logout" onAction="#logout" style="-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;"/>
+        <VBox fx:id="sidebar" spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;">
+            <!-- Sidebar will be populated dynamically by SidebarUtil -->
         </VBox>
     </left>
     <center>
         <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
             <Label text="💳 Payment History" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Search By:" style="-fx-font-size: 14;"/>
+                <ComboBox fx:id="searchCriteriaComboBox" style="-fx-pref-width: 150;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Payment ID"/>
+                            <String fx:value="Appointment ID"/>
+                            <String fx:value="Payment Method"/>
+                            <String fx:value="Payment Status"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <TextField fx:id="searchField" promptText="Enter search term" style="-fx-pref-width: 200;"/>
+                <Button text="🔍 Search" onAction="#searchPayments" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                <Button text="Clear" onAction="#clearSearch" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                <Button text="✏️ Update Payment" onAction="#showUpdateForm" style="-fx-background-color: #f1c40f; -fx-text-fill: white;"/>
+            </HBox>
+            <VBox fx:id="updateForm" spacing="10" visible="false" managed="false">
+                <Label text="Update Payment" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Payment ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updatePaymentIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Appointment ID:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateAppointmentIdField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Amount:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateAmountField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Payment Date:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updatePaymentDateField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Payment Method:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updatePaymentMethodField" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Payment Status:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <ComboBox fx:id="updatePaymentStatusComboBox" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                </GridPane>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Save Changes" onAction="#updatePayment" style="-fx-background-color: #1abc9c; -fx-text-fill: white;"/>
+                    <Button text="Cancel" onAction="#cancelUpdate" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                </HBox>
+            </VBox>
             <TableView fx:id="paymentTable" style="-fx-pref-height: 400;">
                 <columns>
-                    <TableColumn text="Payment ID" fx:id="paymentIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Appointment ID" fx:id="appointmentIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Amount" fx:id="amountColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Payment Date" fx:id="paymentDateColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Payment Method" fx:id="paymentMethodColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Payment Status" fx:id="paymentStatusColumn" style="-fx-alignment: CENTER;"/>
+                    <TableColumn text="Payment ID" fx:id="paymentIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Appointment ID" fx:id="appointmentIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Amount" fx:id="amountColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Payment Date" fx:id="paymentDateColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Payment Method" fx:id="paymentMethodColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Payment Status" fx:id="paymentStatusColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
                 </columns>
             </TableView>
         </VBox>

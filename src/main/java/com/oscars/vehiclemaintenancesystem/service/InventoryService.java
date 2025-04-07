@@ -13,7 +13,7 @@ public class InventoryService {
     }
 
     public void updateInventoryItem(String itemId, int quantity) throws Exception {
-        inventoryDAO.updateInventory(itemId, quantity);
+        inventoryDAO.updateInventoryItem(itemId, quantity);
     }
 
     public void deleteInventoryItem(String itemId) throws Exception {

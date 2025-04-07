@@ -19,4 +19,8 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerDAO.getAllCustomers();
     }
+
+    public void updateCustomer(String customerId, String firstName, String lastName, String phoneNumber, String email, String address) throws Exception {
+        customerDAO.updateCustomer(customerId, firstName, lastName, phoneNumber, email, address);
+    }
 }

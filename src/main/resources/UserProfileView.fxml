@@ -10,27 +10,82 @@
         </VBox>
     </left>
     <center>
-        <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
-            <Label text="👤 User Profile" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
-            <GridPane hgap="10" vgap="10">
-                <Label text="User ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="userIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200" maxWidth="200" editable="false"/>
-                <Label text="Username:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="usernameField" GridPane.rowIndex="1" GridPane.columnIndex="1" prefWidth="200" maxWidth="200" editable="false"/>
-                <Label text="Role ID:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="roleIdField" GridPane.rowIndex="2" GridPane.columnIndex="1" prefWidth="200" maxWidth="200" editable="false"/>
-                <Label text="First Name:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="firstNameField" GridPane.rowIndex="3" GridPane.columnIndex="1" prefWidth="200" maxWidth="200"/>
-                <Label text="Last Name:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="lastNameField" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="200" maxWidth="200"/>
-                <Label text="Email:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="emailField" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="200" maxWidth="200"/>
-                <Label text="New Password:" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="passwordField" GridPane.rowIndex="6" GridPane.columnIndex="1" prefWidth="200" maxWidth="200" promptText="Leave blank to keep current password"/>
-                <Label text="Status:" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <Label fx:id="statusLabel" GridPane.rowIndex="7" GridPane.columnIndex="1" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-            </GridPane>
-            <Button text="💾 Update Profile" onAction="#updateProfile" style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
-        </VBox>
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: #ecf0f1;">
+            <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
+                <Label text="👤 User Management" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
+
+                <!-- TabPane to organize content -->
+                <TabPane fx:id="tabPane" style="-fx-pref-height: 500;">
+                    <!-- Tab 1: View Users -->
+                    <Tab text="View Users" closable="false">
+                        <VBox spacing="10" style="-fx-padding: 10;">
+                            <Label text="All Users" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                            <TableView fx:id="userTable" style="-fx-pref-height: 400;">
+                                <columns>
+                                    <TableColumn text="User ID" fx:id="userIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                                    <TableColumn text="Username" fx:id="usernameColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                                    <TableColumn text="Role ID" fx:id="roleIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                                    <TableColumn text="First Name" fx:id="firstNameColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                                    <TableColumn text="Last Name" fx:id="lastNameColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                                    <TableColumn text="Email" fx:id="emailColumn" style="-fx-alignment: CENTER;" prefWidth="150"/>
+                                    <TableColumn text="Status" fx:id="statusColumn" style="-fx-alignment: CENTER;" prefWidth="80"/>
+                                </columns>
+                            </TableView>
+                        </VBox>
+                    </Tab>
+
+                    <!-- Tab 2: Create User -->
+                    <Tab text="Create User" closable="false">
+                        <VBox spacing="10" style="-fx-padding: 10;">
+                            <Label text="Create New User" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                            <GridPane hgap="10" vgap="10">
+                                <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="newUsernameField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="newPasswordField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="Role ID:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="newRoleIdField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;" promptText="e.g., ROLE00004"/>
+                                <Label text="First Name:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="newFirstNameField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="Last Name:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="newLastNameField" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="Email:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="newEmailField" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="Status:" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <ComboBox fx:id="newStatusComboBox" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-pref-width: 200;" promptText="Select Status"/>
+                            </GridPane>
+                            <Button text="➕ Create User" onAction="#createUser" style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
+                        </VBox>
+                    </Tab>
+
+                    <!-- Tab 3: Update User -->
+                    <Tab text="Update User" closable="false">
+                        <VBox spacing="10" style="-fx-padding: 10;">
+                            <Label text="Update Selected User" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                            <GridPane hgap="10" vgap="10">
+                                <Label text="User ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="userIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                                <Label text="Username:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="usernameField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                                <Label text="Role ID:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="roleIdField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                                <Label text="First Name:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="firstNameField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="Last Name:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="lastNameField" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="Email:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="emailField" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                                <Label text="New Password:" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                                <TextField fx:id="passwordField" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-pref-width: 200;" promptText="Leave blank to keep current password"/>
+                                <Label fx:id="statusLabel" GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                            </GridPane>
+                            <HBox spacing="10">
+                                <Button text="✏️ Update User" onAction="#updateProfile" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
+                            </HBox>
+                        </VBox>
+                    </Tab>
+                </TabPane>
+            </VBox>
+        </ScrollPane>
     </center>
 </BorderPane>

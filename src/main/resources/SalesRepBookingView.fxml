@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<!--<?import javafx.scene.label.*?>-->
 <?import javafx.scene.text.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.SalesRepBookingController"
             style="-fx-background-color: #ecf0f1;" stylesheets="@styles.css">
@@ -40,6 +41,7 @@
                     <TextField fx:id="customerAddressField" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="150" maxWidth="150"/>
                 </GridPane>
                 <Button text="➕ Add Customer" onAction="#addCustomer" style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
+                <Label fx:id="customerResultLabel" text="" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
             </VBox>
 
             <!-- Vehicle Column -->

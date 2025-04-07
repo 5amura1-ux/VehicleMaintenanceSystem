@@ -2,6 +2,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.AppointmentHistoryController">
     <left>
         <VBox fx:id="sidebar" spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;" minWidth="200">
@@ -11,6 +13,52 @@
     <center>
         <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
             <Label text="📅 Appointment History" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Search By:" style="-fx-font-size: 14;"/>
+                <ComboBox fx:id="searchCriteriaComboBox" style="-fx-pref-width: 150;">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Appointment ID"/>
+                            <String fx:value="Vehicle ID"/>
+                            <String fx:value="Service Name"/>
+                            <String fx:value="Mechanic Name"/>
+                            <String fx:value="Appointment Date"/>
+                            <String fx:value="Status"/>
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+                <TextField fx:id="searchField" promptText="Enter search term" style="-fx-pref-width: 200;"/>
+                <Button text="🔍 Search" onAction="#searchAppointments" style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+                <Button text="Clear" onAction="#clearSearch" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                <Button text="✏️ Update Appointment" onAction="#showUpdateForm" style="-fx-background-color: #f1c40f; -fx-text-fill: white;"/>
+            </HBox>
+            <VBox fx:id="updateForm" spacing="10" visible="false" managed="false">
+                <Label text="Update Appointment" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Appointment ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateAppointmentIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Vehicle ID:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateVehicleIdField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Service ID:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateServiceIdField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Package ID:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updatePackageIdField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Mechanic ID:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateMechanicIdField" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Appointment Date:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <DatePicker fx:id="updateAppointmentDatePicker" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Timeslot:" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <ComboBox fx:id="updateTimeslotComboBox" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Status:" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <ComboBox fx:id="updateStatusComboBox" GridPane.rowIndex="7" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Notes:" GridPane.rowIndex="8" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextArea fx:id="updateNotesField" GridPane.rowIndex="8" GridPane.columnIndex="1" style="-fx-pref-width: 200; -fx-pref-height: 100;"/>
+                </GridPane>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Save Changes" onAction="#updateAppointment" style="-fx-background-color: #1abc9c; -fx-text-fill: white;"/>
+                    <Button text="Cancel" onAction="#cancelUpdate" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                </HBox>
+            </VBox>
             <TableView fx:id="appointmentTable" style="-fx-pref-height: 400;">
                 <columns>
                     <TableColumn text="Appointment ID" fx:id="appointmentIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>

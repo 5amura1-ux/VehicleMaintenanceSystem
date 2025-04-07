@@ -4,12 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Appointments")
-@NamedNativeQuery(
-        name = "Appointment.findAllFromView",
-        query = "SELECT * FROM VW_APPOINTMENT_HISTORY",
-        resultClass = Appointment.class
-)
+@Table(name = "Appointments", schema = "OSCARS")
 public class Appointment {
     @Id
     @Column(name = "appointment_id")
@@ -18,177 +13,122 @@ public class Appointment {
     @Column(name = "vehicle_id")
     private String vehicleId;
 
-    @Column(name = "vehicle_make")
-    private String vehicleMake; // From view
-
-    @Column(name = "vehicle_model")
-    private String vehicleModel; // From view
-
     @Column(name = "service_id")
     private String serviceId;
-
-    @Column(name = "service_name")
-    private String serviceName; // From view
 
     @Column(name = "package_id")
     private String packageId;
 
-    @Column(name = "package_name")
-    private String packageName; // From view
-
     @Column(name = "mechanic_id")
     private String mechanicId;
 
-    @Column(name = "mechanic_name")
-    private String mechanicName; // From view
-
     @Column(name = "appointment_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date appointmentDate;
 
-    @Column(name = "timeslot")
-    private String timeslot;
-
     @Column(name = "completed_date")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date completedDate;
 
-    @Column(name = "status")
-    private String status;
-
     @Column(name = "invoice_generated")
-    private String invoiceGenerated;
+    private String invoiceGenerated; // This field is causing the issue
+
+    @Column(name = "mechanic_name")
+    private String mechanicName;
 
     @Column(name = "notes")
     private String notes;
 
+    @Column(name = "package_name")
+    private String packageName;
+
+    @Column(name = "service_name")
+    private String serviceName;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "timeslot")
+    private String timeslot;
+
+    @Column(name = "vehicle_make")
+    private String vehicleMake;
+
+    @Column(name = "vehicle_model")
+    private String vehicleModel;
+
     // Default constructor
     public Appointment() {}
 
-    // Getters and Setters
-    public String getAppointmentId() {
-        return appointmentId;
-    }
-
-    public void setAppointmentId(String appointmentId) {
+    // Parameterized constructor (optional)
+    public Appointment(String appointmentId, String vehicleId, String serviceId, String packageId, String mechanicId,
+                       Date appointmentDate, Date completedDate, String invoiceGenerated, String mechanicName,
+                       String notes, String packageName, String serviceName, String status, String timeslot,
+                       String vehicleMake, String vehicleModel) {
         this.appointmentId = appointmentId;
-    }
-
-    public String getVehicleId() {
-        return vehicleId;
-    }
-
-    public void setVehicleId(String vehicleId) {
         this.vehicleId = vehicleId;
-    }
-
-    public String getVehicleMake() {
-        return vehicleMake;
-    }
-
-    public void setVehicleMake(String vehicleMake) {
+        this.serviceId = serviceId;
+        this.packageId = packageId;
+        this.mechanicId = mechanicId;
+        this.appointmentDate = appointmentDate;
+        this.completedDate = completedDate;
+        this.invoiceGenerated = invoiceGenerated;
+        this.mechanicName = mechanicName;
+        this.notes = notes;
+        this.packageName = packageName;
+        this.serviceName = serviceName;
+        this.status = status;
+        this.timeslot = timeslot;
         this.vehicleMake = vehicleMake;
-    }
-
-    public String getVehicleModel() {
-        return vehicleModel;
-    }
-
-    public void setVehicleModel(String vehicleModel) {
         this.vehicleModel = vehicleModel;
     }
 
-    public String getServiceId() {
-        return serviceId;
-    }
+    // Getters and Setters
+    public String getAppointmentId() { return appointmentId; }
+    public void setAppointmentId(String appointmentId) { this.appointmentId = appointmentId; }
 
-    public void setServiceId(String serviceId) {
-        this.serviceId = serviceId;
-    }
+    public String getVehicleId() { return vehicleId; }
+    public void setVehicleId(String vehicleId) { this.vehicleId = vehicleId; }
 
-    public String getServiceName() {
-        return serviceName;
-    }
+    public String getServiceId() { return serviceId; }
+    public void setServiceId(String serviceId) { this.serviceId = serviceId; }
 
-    public void setServiceName(String serviceName) {
-        this.serviceName = serviceName;
-    }
+    public String getPackageId() { return packageId; }
+    public void setPackageId(String packageId) { this.packageId = packageId; }
 
-    public String getPackageId() {
-        return packageId;
-    }
+    public String getMechanicId() { return mechanicId; }
+    public void setMechanicId(String mechanicId) { this.mechanicId = mechanicId; }
 
-    public void setPackageId(String packageId) {
-        this.packageId = packageId;
-    }
+    public Date getAppointmentDate() { return appointmentDate; }
+    public void setAppointmentDate(Date appointmentDate) { this.appointmentDate = appointmentDate; }
 
-    public String getPackageName() {
-        return packageName;
-    }
+    public Date getCompletedDate() { return completedDate; }
+    public void setCompletedDate(Date completedDate) { this.completedDate = completedDate; }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
+    public String getInvoiceGenerated() { return invoiceGenerated; }
+    public void setInvoiceGenerated(String invoiceGenerated) { this.invoiceGenerated = invoiceGenerated; }
 
-    public String getMechanicId() {
-        return mechanicId;
-    }
+    public String getMechanicName() { return mechanicName; }
+    public void setMechanicName(String mechanicName) { this.mechanicName = mechanicName; }
 
-    public void setMechanicId(String mechanicId) {
-        this.mechanicId = mechanicId;
-    }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 
-    public String getMechanicName() {
-        return mechanicName;
-    }
+    public String getPackageName() { return packageName; }
+    public void setPackageName(String packageName) { this.packageName = packageName; }
 
-    public void setMechanicName(String mechanicName) {
-        this.mechanicName = mechanicName;
-    }
+    public String getServiceName() { return serviceName; }
+    public void setServiceName(String serviceName) { this.serviceName = serviceName; }
 
-    public Date getAppointmentDate() {
-        return appointmentDate;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setAppointmentDate(Date appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
+    public String getTimeslot() { return timeslot; }
+    public void setTimeslot(String timeslot) { this.timeslot = timeslot; }
 
-    public String getTimeslot() {
-        return timeslot;
-    }
+    public String getVehicleMake() { return vehicleMake; }
+    public void setVehicleMake(String vehicleMake) { this.vehicleMake = vehicleMake; }
 
-    public void setTimeslot(String timeslot) {
-        this.timeslot = timeslot;
-    }
-
-    public Date getCompletedDate() {
-        return completedDate;
-    }
-
-    public void setCompletedDate(Date completedDate) {
-        this.completedDate = completedDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getInvoiceGenerated() {
-        return invoiceGenerated;
-    }
-
-    public void setInvoiceGenerated(String invoiceGenerated) {
-        this.invoiceGenerated = invoiceGenerated;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
+    public String getVehicleModel() { return vehicleModel; }
+    public void setVehicleModel(String vehicleModel) { this.vehicleModel = vehicleModel; }
 }

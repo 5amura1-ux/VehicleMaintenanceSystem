@@ -1,10 +1,13 @@
 package com.oscars.vehiclemaintenancesystem;
 
 import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
+import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,6 +17,27 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         System.out.println("Welcome to Vehicle Maintenance System");
+
+        // Initialize the database connection (Hibernate SessionFactory) before loading the UI
+        try {
+            System.out.println("Initializing database connection...");
+            HibernateUtil.getSessionFactory(); // This will trigger the SessionFactory creation
+            System.out.println("Database connection initialized successfully");
+        } catch (Exception e) {
+            System.err.println("Failed to initialize database connection: " + e.getMessage());
+            e.printStackTrace();
+
+            // Show an error dialog and exit the application
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Connection Error");
+            alert.setHeaderText("Failed to Connect to Database");
+            alert.setContentText("An error occurred while connecting to the database: " + e.getMessage() + "\nThe application will exit.");
+            alert.showAndWait();
+
+            // Exit the application
+            Platform.exit();
+            return;
+        }
 
         // Load the initial FXML file (Login.fxml)
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Login.fxml"));

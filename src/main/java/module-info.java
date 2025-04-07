@@ -6,7 +6,8 @@ module com.oscars.vehiclemaintenancesystem {
     requires java.persistence; // If you're using a database
     requires java.naming; // If you're using a database
     requires javafx.graphics;
-    requires jakarta.persistence; // If you're using a database
+    requires jakarta.persistence;
+    requires antlr; // If you're using a database
 
 
 

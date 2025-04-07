@@ -9,7 +9,57 @@
     -fx-background-color: #0078d7;
     -fx-padding: 15px;
 }
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);
+    -fx-alignment: center;
+}
 
+.card-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.stat-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #34495e;
+    -fx-font-family: "Arial";
+}
+
+.dashboard-table {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 5;
+    -fx-border-color: #dfe6e9;
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+}
+
+.dashboard-table .column-header {
+    -fx-background-color: #2c3e50;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+
+.dashboard-table .table-row-cell:odd {
+    -fx-background-color: #f7f9fc;
+}
+
+.dashboard-table .table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+.dashboard-table .table-row-cell:hover {
+    -fx-background-color: #dfe6e9;
+}
 /* Header title */
 .header-title {
     -fx-font-size: 22px;

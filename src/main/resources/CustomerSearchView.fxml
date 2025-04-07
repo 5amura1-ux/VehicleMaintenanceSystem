@@ -14,15 +14,37 @@
             <HBox spacing="10">
                 <TextField fx:id="searchField" promptText="Search by name or email" style="-fx-pref-width: 300;"/>
                 <Button text="🔍 Search" onAction="#searchCustomers" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
+                <Button text="✏️ Update Customer" onAction="#showUpdateForm" style="-fx-background-color: #f1c40f; -fx-text-fill: white; -fx-font-size: 14;"/>
             </HBox>
+            <VBox fx:id="updateForm" spacing="10" visible="false" managed="false">
+                <Label text="Update Customer" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Customer ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateCustomerIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="First Name:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateFirstNameField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Last Name:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateLastNameField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Phone Number:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updatePhoneNumberField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Email:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateEmailField" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Address:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateAddressField" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                </GridPane>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Save Changes" onAction="#updateCustomer" style="-fx-background-color: #1abc9c; -fx-text-fill: white;"/>
+                    <Button text="Cancel" onAction="#cancelUpdate" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                </HBox>
+            </VBox>
             <TableView fx:id="customerTable" style="-fx-pref-height: 400;">
                 <columns>
-                    <TableColumn text="Customer ID" fx:id="customerIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="First Name" fx:id="firstNameColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Last Name" fx:id="lastNameColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Phone Number" fx:id="phoneNumberColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Email" fx:id="emailColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Address" fx:id="addressColumn" style="-fx-alignment: CENTER;"/>
+                    <TableColumn text="Customer ID" fx:id="customerIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="First Name" fx:id="firstNameColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Last Name" fx:id="lastNameColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Phone Number" fx:id="phoneNumberColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Email" fx:id="emailColumn" style="-fx-alignment: CENTER;" prefWidth="150"/>
+                    <TableColumn text="Address" fx:id="addressColumn" style="-fx-alignment: CENTER;" prefWidth="200"/>
                 </columns>
             </TableView>
         </VBox>

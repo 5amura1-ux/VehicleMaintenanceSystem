@@ -19,15 +19,13 @@ import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Objects;
 
 public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
 
-    private UserService userService = new UserService();
+    private final UserService userService = new UserService();
     private static String loggedInUserId;
     private static String loggedInUserRole;
 
@@ -37,6 +35,11 @@ public class LoginController {
 
     public static String getLoggedInUserRole() {
         return loggedInUserRole;
+    }
+
+    public static void clearLoggedInUser() {
+        loggedInUserId = null;
+        loggedInUserRole = null;
     }
 
     @FXML
@@ -51,22 +54,15 @@ public class LoginController {
                 return;
             }
 
-            // Authenticate user by comparing raw password
-            List<User> users = userService.getAllUsers();
-            User authenticatedUser = null;
-            for (User user : users) {
-                if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                    if (user.getStatus().equals("Active")) {
-                        authenticatedUser = user;
-                        break;
-                    } else {
-                        errorLabel.setText("User account is inactive");
-                        return;
-                    }
-                }
-            }
-
+            // Authenticate user using UserService.validateUser (handles encrypted passwords)
+            User authenticatedUser = userService.validateUser(username, password);
             if (authenticatedUser != null) {
+                if (!authenticatedUser.getStatus().equals("Active")) {
+                    errorLabel.setText("User account is inactive");
+                    return;
+                }
+
+                // Login successful
                 loggedInUserId = authenticatedUser.getUserId();
                 loggedInUserRole = authenticatedUser.getRoleId();
 
@@ -74,7 +70,7 @@ public class LoginController {
                 setUserIdInContext(authenticatedUser.getUserId());
 
                 // Load the unified Dashboard.fxml for all roles
-                Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/Dashboard.fxml")));
+                Parent root = FXMLLoader.load(getClass().getResource("/Dashboard.fxml"));
                 Stage stage = (Stage) usernameField.getScene().getWindow();
                 Scene scene = new Scene(root, WindowConfig.DEFAULT_WINDOW_WIDTH, WindowConfig.DEFAULT_WINDOW_HEIGHT);
                 stage.setScene(scene);
@@ -88,6 +84,9 @@ public class LoginController {
             } else {
                 errorLabel.setText("Invalid username or password");
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+            errorLabel.setText("Error loading dashboard: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             errorLabel.setText("Error during login: " + e.getMessage());

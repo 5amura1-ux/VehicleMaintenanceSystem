@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.DashboardController">
     <left>
         <VBox fx:id="sidebar" spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;" minWidth="200">
@@ -8,12 +9,41 @@
         </VBox>
     </left>
     <center>
-        <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;" alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
-            <Label fx:id="welcomeLabel" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
-            <Label fx:id="totalCustomersLabel" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
-            <Label fx:id="totalVehiclesLabel" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
-            <Label fx:id="totalAppointmentsLabel" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
-            <Label fx:id="totalRevenueLabel" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
-        </VBox>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: #ecf0f1;">
+            <VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #ecf0f1;" alignment="TOP_CENTER">
+                <!-- Welcome Section -->
+                <VBox styleClass="card">
+                    <Label fx:id="welcomeLabel" styleClass="card-title"/>
+                </VBox>
+
+                <!-- Statistics Section -->
+                <VBox spacing="10" styleClass="card">
+                    <Label text="📊 Statistics" styleClass="section-title"/>
+                    <Separator style="-fx-background-color: #2c3e50; -fx-pref-height: 2;"/>
+                    <HBox spacing="20" alignment="CENTER">
+                        <Label fx:id="totalCustomersLabel" styleClass="stat-label"/>
+                        <Label fx:id="totalVehiclesLabel" styleClass="stat-label"/>
+                        <Label fx:id="totalAppointmentsLabel" styleClass="stat-label"/>
+                        <Label fx:id="totalRevenueLabel" styleClass="stat-label"/>
+                        <Label fx:id="pendingPaymentsLabel" styleClass="stat-label"/>
+                        <Label fx:id="todaysAppointmentsLabel" styleClass="stat-label"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Recent Appointments Section -->
+                <VBox spacing="10" styleClass="card">
+                    <Label text="🕒 Recent Appointments" styleClass="section-title"/>
+                    <Separator style="-fx-background-color: #2c3e50; -fx-pref-height: 2;"/>
+                    <TableView fx:id="recentAppointmentsTable" styleClass="dashboard-table">
+                        <columns>
+                            <TableColumn text="Appointment ID" fx:id="recentAppointmentIdColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                            <TableColumn text="Vehicle ID" fx:id="recentVehicleIdColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                            <TableColumn text="Date" fx:id="recentAppointmentDateColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                            <TableColumn text="Status" fx:id="recentStatusColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </VBox>
+        </ScrollPane>
     </center>
 </BorderPane>

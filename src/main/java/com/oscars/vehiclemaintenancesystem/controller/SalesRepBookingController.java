@@ -1,5 +1,6 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import antlr.ASTNULLType;
 import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Customer;
 import com.oscars.vehiclemaintenancesystem.model.Vehicle;
@@ -72,6 +73,7 @@ public class SalesRepBookingController {
     @FXML private TextArea notesField;
     @FXML private Label resultLabel;
     @FXML private VBox sidebar;
+    @FXML private Label customerResultLabel;
 
     private CustomerService customerService = new CustomerService();
     private VehicleService vehicleService = new VehicleService();
@@ -232,8 +234,11 @@ public class SalesRepBookingController {
                     customerAddressField.getText()
             );
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Customer added successfully with ID: " + customerId);
-            alert.showAndWait();
+
+            customerResultLabel.setText("Customer added successfully with ID: " + customerId);
+
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Customer added successfully with ID: " + customerId);
+//            alert.showAndWait();
             customerFirstNameField.clear();
             customerLastNameField.clear();
             customerPhoneField.clear();
@@ -329,8 +334,9 @@ public class SalesRepBookingController {
                     vehicleColorField.getText()
             );
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vehicle added successfully with ID: " + vehicleId);
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vehicle added successfully with ID: " + vehicleId);
+//            alert.showAndWait();
+            resultLabel.setText("Vehicle added successfully with ID: " + vehicleId);
             vehicleVinField.clear();
             vehicleMakeField.clear();
             vehicleModelField.clear();

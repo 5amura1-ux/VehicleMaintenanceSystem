@@ -1,7 +1,10 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Role;
 import com.oscars.vehiclemaintenancesystem.service.RoleService;
+import com.oscars.vehiclemaintenancesystem.util.SidebarUtil;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,6 +22,7 @@ public class RoleManagementController {
     @FXML private TableView<Role> roleTable;
     @FXML private TableColumn<Role, String> roleIdColumn;
     @FXML private TableColumn<Role, String> roleNameColumn;
+    @FXML private VBox sidebar;
 
     private final RoleService roleService = new RoleService();
 
@@ -28,16 +33,36 @@ public class RoleManagementController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
             alert.showAndWait();
             try {
-                loadView("Dashboard.fxml");
+                String fxmlFile;
+                switch (LoginController.getLoggedInUserRole()) {
+                    case "ROLE00003":
+                        fxmlFile = "MechanicDashboard.fxml";
+                        break;
+                    case "ROLE00005":
+                        fxmlFile = "SalesRepDashboard.fxml";
+                        break;
+                    default:
+                        fxmlFile = "Login.fxml";
+                }
+                loadView(fxmlFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return;
         }
 
+        // Set up table columns
         roleIdColumn.setCellValueFactory(new PropertyValueFactory<>("roleId"));
         roleNameColumn.setCellValueFactory(new PropertyValueFactory<>("roleName"));
+
+        // Load roles
         loadRoles();
+
+        // Populate the sidebar based on role
+        Platform.runLater(() -> {
+            Stage stage = (Stage) sidebar.getScene().getWindow();
+            SidebarUtil.populateSidebar(sidebar, LoginController.getLoggedInUserRole(), stage);
+        });
     }
 
     @FXML
@@ -62,7 +87,6 @@ public class RoleManagementController {
 
     @FXML
     public void updateRole() {
-        // Implementation for updating a role (requires a PL/SQL procedure like UPDATE_ROLE)
         Alert alert = new Alert(Alert.AlertType.WARNING, "Update Role functionality not implemented yet");
         alert.showAndWait();
     }
@@ -74,7 +98,7 @@ public class RoleManagementController {
             try {
                 roleService.deleteRole(selectedRole.getRoleId());
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, "Role deleted successfully");
-                        alert.showAndWait();
+                alert.showAndWait();
                 loadRoles();
             } catch (Exception e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Error deleting role: " + e.getMessage());
@@ -91,107 +115,31 @@ public class RoleManagementController {
             roleTable.setItems(FXCollections.observableArrayList(roleService.getAllRoles()));
         } catch (Exception e) {
             e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading roles: " + e.getMessage());
+            alert.showAndWait();
         }
-    }
-
-    @FXML
-    public void showDashboard() throws IOException {
-        loadView("Dashboard.fxml");
-    }
-
-    @FXML
-    public void showCustomerView() throws IOException {
-        loadView("CustomerView.fxml");
-    }
-
-    @FXML
-    public void showVehicleView() throws IOException {
-        loadView("VehicleView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentView() throws IOException {
-        loadView("AppointmentView.fxml");
-    }
-
-    @FXML
-    public void showPaymentView() throws IOException {
-        loadView("PaymentView.fxml");
-    }
-
-    @FXML
-    public void showInventoryView() throws IOException {
-        loadView("InventoryView.fxml");
-    }
-
-    @FXML
-    public void showUserView() throws IOException {
-        loadView("UserView.fxml");
-    }
-
-    @FXML
-    public void showNotificationView() throws IOException {
-        loadView("NotificationView.fxml");
-    }
-
-    @FXML
-    public void showServiceManagementView() throws IOException {
-        loadView("ServiceManagementView.fxml");
-    }
-
-    @FXML
-    public void showRoleManagementView() throws IOException {
-        loadView("RoleManagementView.fxml");
-    }
-
-    @FXML
-    public void showAuditLogView() throws IOException {
-        loadView("AuditLogView.fxml");
-    }
-
-    @FXML
-    public void showErrorLogView() throws IOException {
-        loadView("ErrorLogView.fxml");
-    }
-
-    @FXML
-    public void showCustomerSearchView() throws IOException {
-        loadView("CustomerSearchView.fxml");
-    }
-
-    @FXML
-    public void showVehicleSearchView() throws IOException {
-        loadView("VehicleSearchView.fxml");
-    }
-
-    @FXML
-    public void showAppointmentHistoryView() throws IOException {
-        loadView("AppointmentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showPaymentHistoryView() throws IOException {
-        loadView("PaymentHistoryView.fxml");
-    }
-
-    @FXML
-    public void showInventoryReportView() throws IOException {
-        loadView("InventoryView.fxml");
-    }
-
-    @FXML
-    public void showUserProfileView() throws IOException {
-        loadView("UserProfileView.fxml");
-    }
-
-    @FXML
-    public void logout() {
-        System.exit(0);
     }
 
     private void loadView(String fxmlFile) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
         Stage stage = (Stage) roleTable.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        Scene scene = new Scene(root, WindowConfig.DEFAULT_WINDOW_WIDTH, WindowConfig.DEFAULT_WINDOW_HEIGHT);
+        stage.setScene(scene);
+        stage.setTitle("Vehicle Maintenance System - " + fxmlFile.replace(".fxml", ""));
+
+        // Apply window size constraints
+        stage.setMinWidth(WindowConfig.MIN_WINDOW_WIDTH);
+        stage.setMinHeight(WindowConfig.MIN_WINDOW_HEIGHT);
+        stage.setMaxWidth(WindowConfig.MAX_WINDOW_WIDTH);
+        stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
+    }
+
+    @FXML
+    public void logout() {
+        try {
+            loadView("Login.fxml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

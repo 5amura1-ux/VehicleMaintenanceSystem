@@ -15,17 +15,43 @@
             <HBox spacing="10">
                 <TextField fx:id="searchField" promptText="Search by VIN, make, model, or license plate" prefWidth="300" maxWidth="300"/>
                 <Button text="🔍 Search" onAction="#searchVehicles" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
+                <Button text="✏️ Update Vehicle" onAction="#showUpdateForm" style="-fx-background-color: #f1c40f; -fx-text-fill: white; -fx-font-size: 14;"/>
             </HBox>
+            <VBox fx:id="updateForm" spacing="10" visible="false" managed="false">
+                <Label text="Update Vehicle" style="-fx-font-size: 16; -fx-text-fill: #2c3e50;"/>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Vehicle ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateVehicleIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Customer ID:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateCustomerIdField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="VIN:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateVinField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;" editable="false"/>
+                    <Label text="Make:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateMakeField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Model:" GridPane.rowIndex="4" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateModelField" GridPane.rowIndex="4" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Year:" GridPane.rowIndex="5" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateYearField" GridPane.rowIndex="5" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="License Plate:" GridPane.rowIndex="6" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateLicensePlateField" GridPane.rowIndex="6" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Color:" GridPane.rowIndex="7" GridPane.columnIndex="0" style="-fx-font-size: 14;"/>
+                    <TextField fx:id="updateColorField" GridPane.rowIndex="7" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                </GridPane>
+                <HBox spacing="10" alignment="CENTER">
+                    <Button text="Save Changes" onAction="#updateVehicle" style="-fx-background-color: #1abc9c; -fx-text-fill: white;"/>
+                    <Button text="Cancel" onAction="#cancelUpdate" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+                </HBox>
+            </VBox>
             <TableView fx:id="vehicleTable" style="-fx-pref-height: 400;">
                 <columns>
-                    <TableColumn text="Vehicle ID" fx:id="vehicleIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Customer ID" fx:id="customerIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="VIN" fx:id="vinColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Make" fx:id="makeColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Model" fx:id="modelColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Year" fx:id="yearColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="License Plate" fx:id="licensePlateColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Color" fx:id="colorColumn" style="-fx-alignment: CENTER;"/>
+                    <TableColumn text="Vehicle ID" fx:id="vehicleIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Customer ID" fx:id="customerIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="VIN" fx:id="vinColumn" style="-fx-alignment: CENTER;" prefWidth="150"/>
+                    <TableColumn text="Make" fx:id="makeColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Model" fx:id="modelColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Year" fx:id="yearColumn" style="-fx-alignment: CENTER;" prefWidth="80"/>
+                    <TableColumn text="License Plate" fx:id="licensePlateColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
+                    <TableColumn text="Color" fx:id="colorColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
                 </columns>
             </TableView>
         </VBox>

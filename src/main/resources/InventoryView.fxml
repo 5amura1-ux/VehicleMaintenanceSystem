@@ -5,35 +5,50 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.InventoryController">
     <left>
         <VBox fx:id="sidebar" spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;" minWidth="200">
-            <!-- Buttons will be added dynamically in the controller -->
+            <!-- Buttons will be added dynamically by SidebarUtil -->
         </VBox>
     </left>
     <center>
         <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
-            <Label text="📦 Manage Inventory" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
-            <GridPane hgap="10" vgap="10">
-                <Label text="Item Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="itemNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
-                <Label text="Quantity:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="quantityField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
-                <Label text="Low Stock Threshold:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="lowStockThresholdField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
-                <Label text="Unit Price:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="unitPriceField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
-            </GridPane>
-            <HBox spacing="10">
+            <Label text="📦 Inventory Management" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
+
+            <!-- Add Inventory Item Section -->
+            <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                <Label text="Add New Inventory Item" style="-fx-font-size: 16; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Item Name:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                    <TextField fx:id="addItemNameField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Quantity:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                    <TextField fx:id="addQuantityField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Low Stock Threshold:" GridPane.rowIndex="2" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                    <TextField fx:id="addLowStockThresholdField" GridPane.rowIndex="2" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="Unit Price:" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                    <TextField fx:id="addUnitPriceField" GridPane.rowIndex="3" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                </GridPane>
                 <Button text="➕ Add Item" onAction="#addInventoryItem" style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
+            </VBox>
+
+            <!-- Update Inventory Quantity Section -->
+            <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                <Label text="Update Inventory Quantity" style="-fx-font-size: 16; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+                <GridPane hgap="10" vgap="10">
+                    <Label text="Select Item:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                    <ComboBox fx:id="updateItemComboBox" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                    <Label text="New Quantity:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
+                    <TextField fx:id="updateQuantityField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                </GridPane>
                 <Button text="✏️ Update Quantity" onAction="#updateInventoryItem" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
-                <Button text="🗑️ Delete Item" onAction="#deleteInventoryItem" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;"/>
-            </HBox>
+            </VBox>
+
+            <!-- Inventory Table -->
             <TableView fx:id="inventoryTable" style="-fx-pref-height: 300;">
                 <columns>
-                    <TableColumn text="Item ID" fx:id="itemIdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Item Name" fx:id="itemNameColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Quantity" fx:id="quantityColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Low Stock Threshold" fx:id="lowStockThresholdColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Unit Price" fx:id="unitPriceColumn" style="-fx-alignment: CENTER;"/>
-                    <TableColumn text="Last Updated" fx:id="lastUpdatedColumn" style="-fx-alignment: CENTER;"/>
+                    <TableColumn text="Item ID" fx:id="itemIdColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Item Name" fx:id="itemNameColumn" style="-fx-alignment: CENTER;" prefWidth="150"/>
+                    <TableColumn text="Quantity" fx:id="quantityColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Low Stock Threshold" fx:id="lowStockThresholdColumn" style="-fx-alignment: CENTER;" prefWidth="150"/>
+                    <TableColumn text="Unit Price" fx:id="unitPriceColumn" style="-fx-alignment: CENTER;" prefWidth="100"/>
+                    <TableColumn text="Last Updated" fx:id="lastUpdatedColumn" style="-fx-alignment: CENTER;" prefWidth="120"/>
                 </columns>
             </TableView>
         </VBox>

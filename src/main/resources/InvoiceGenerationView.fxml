@@ -2,7 +2,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.InvoiceGenerationController">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.oscars.vehiclemaintenancesystem.controller.InvoiceGenerationController"
+            style="-fx-background-color: #ecf0f1;">
     <left>
         <VBox fx:id="sidebar" spacing="10" style="-fx-background-color: #2c3e50; -fx-padding: 10;" minWidth="200">
             <!-- Buttons will be added dynamically in the controller -->
@@ -10,15 +11,18 @@
     </left>
     <center>
         <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ecf0f1;">
-            <Label text="📄 Invoice Generation" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
+            <Label text="💳 Invoice Generation" style="-fx-font-size: 20; -fx-text-fill: #2c3e50;"/>
             <GridPane hgap="10" vgap="10">
                 <Label text="Appointment ID:" GridPane.rowIndex="0" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
                 <TextField fx:id="appointmentIdField" GridPane.rowIndex="0" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
                 <Label text="Payment Method:" GridPane.rowIndex="1" GridPane.columnIndex="0" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;"/>
-                <TextField fx:id="paymentMethodField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;"/>
+                <TextField fx:id="paymentMethodField" GridPane.rowIndex="1" GridPane.columnIndex="1" style="-fx-pref-width: 200;" promptText="e.g., CREDIT_CARD"/>
             </GridPane>
-            <Button text="📄 Generate Invoice" onAction="#generateInvoice" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
-            <Label fx:id="invoiceDetailsLabel" style="-fx-font-size: 14; -fx-text-fill: #2c3e50; -fx-wrap-text: true;" text="Invoice details will appear here after generation."/>
+            <HBox spacing="10">
+                <Button text="Generate Invoice" onAction="#generateInvoice" style="-fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;"/>
+                <Button text="Process Payment" onAction="#processPayment" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 14;"/>
+            </HBox>
+            <Label fx:id="invoiceDetailsLabel" style="-fx-font-size: 14; -fx-text-fill: #2c3e50;" wrapText="true"/>
         </VBox>
     </center>
 </BorderPane>

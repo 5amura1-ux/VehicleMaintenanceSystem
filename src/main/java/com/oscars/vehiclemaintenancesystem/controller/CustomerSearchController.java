@@ -1,8 +1,12 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
+import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Customer;
 import com.oscars.vehiclemaintenancesystem.service.CustomerService;
+import com.oscars.vehiclemaintenancesystem.util.SidebarUtil;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,11 +15,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class CustomerSearchController {
     @FXML private TextField searchField;
@@ -27,8 +29,16 @@ public class CustomerSearchController {
     @FXML private TableColumn<Customer, String> emailColumn;
     @FXML private TableColumn<Customer, String> addressColumn;
     @FXML private VBox sidebar;
+    @FXML private VBox updateForm;
+    @FXML private TextField updateCustomerIdField;
+    @FXML private TextField updateFirstNameField;
+    @FXML private TextField updateLastNameField;
+    @FXML private TextField updatePhoneNumberField;
+    @FXML private TextField updateEmailField;
+    @FXML private TextField updateAddressField;
 
     private final CustomerService customerService = new CustomerService();
+    private ObservableList<Customer> allCustomers; // Store the full list for filtering
 
     @FXML
     public void initialize() {
@@ -44,7 +54,7 @@ public class CustomerSearchController {
             return;
         }
 
-        // Set up the table columns
+        // Set up the table columns using PropertyValueFactory
         customerIdColumn.setCellValueFactory(new PropertyValueFactory<>("customerId"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -52,123 +62,134 @@ public class CustomerSearchController {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
 
-        // Populate the sidebar based on role
-        populateSidebar(LoginController.getLoggedInUserRole());
+        // Ensure columns are visible
+        customerTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // Load all customers
-        loadAllCustomers();
+        // Load customers
+        loadCustomers();
+
+        // Delay sidebar population until the Scene is fully constructed
+        Platform.runLater(() -> {
+            Stage stage = (Stage) sidebar.getScene().getWindow();
+            SidebarUtil.populateSidebar(sidebar, LoginController.getLoggedInUserRole(), stage);
+        });
     }
 
-    @FXML
-    public void searchCustomers() {
+    private void loadCustomers() {
         try {
-            String searchText = searchField.getText().trim().toLowerCase();
-            if (searchText.isEmpty()) {
-                loadAllCustomers();
-                return;
-            }
-
-            List<Customer> filteredCustomers = customerService.getAllCustomers().stream()
-                    .filter(customer -> customer.getFirstName().toLowerCase().contains(searchText) ||
-                            customer.getLastName().toLowerCase().contains(searchText) ||
-                            customer.getEmail().toLowerCase().contains(searchText))
-                    .collect(Collectors.toList());
-
-            customerTable.setItems(FXCollections.observableArrayList(filteredCustomers));
+            List<Customer> customers = customerService.getAllCustomers();
+            allCustomers = FXCollections.observableArrayList(customers);
+            customerTable.setItems(allCustomers);
         } catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Error searching customers: " + e.getMessage());
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading customers: " + e.getMessage());
             alert.showAndWait();
         }
     }
 
-    private void populateSidebar(String role) {
-        sidebar.getChildren().clear(); // Clear any existing buttons
-
-        // Add buttons based on role
-        switch (role) {
-            case "ROLE00004": // Admin
-                addButton("🏠 Dashboard", "Dashboard.fxml");
-                addButton("👥 Search Customers", "CustomerSearchView.fxml");
-                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("📅 Appointment History", "AppointmentHistory.fxml");
-                addButton("💳 Payments", "PaymentView.fxml");
-                addButton("📦 Inventory", "InventoryView.fxml");
-                addButton("👤 Users", "UserView.fxml");
-                addButton("🔔 Notifications", "NotificationView.fxml");
-                addButton("⚙️ Services", "ServiceManagementView.fxml");
-                addButton("📦 Packages", "ServicePackageManagementView.fxml");
-                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
-                addButton("📜 Audit Log", "AuditLogView.fxml");
-                addButton("❗ Error Log", "ErrorLogView.fxml");
-                addButton("⚙️ System Settings", "SystemSettingsView.fxml");
-                break;
-            case "ROLE00003": // Mechanic
-                addButton("🏠 Dashboard", "Dashboard.fxml");
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("🔧 Mechanic Availability", "MechanicAvailabilityView.fxml");
-                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
-                addButton("📋 Vehicle Checklist", "VehicleChecklistView.fxml");
-                break;
-            case "ROLE00005": // SalesRep
-                addButton("🏠 Dashboard", "Dashboard.fxml");
-                addButton("👥 Search Customers", "CustomerSearchView.fxml");
-                 addButton("🚗 Vehicles", "VehicleSearchView.fxml");
-                addButton("📅 Appointments", "AppointmentView.fxml");
-                addButton("📅 Appointment History", "AppointmentHistory.fxml");
-                addButton("💳 Payments", "PaymentView.fxml");
-                addButton("📝 Feedback", "CustomerFeedbackView.fxml");
-                addButton("📄 Invoice Generation", "InvoiceGenerationView.fxml");
-                break;
+    @FXML
+    public void searchCustomers() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        if (searchText.isEmpty()) {
+            customerTable.setItems(allCustomers);
+            return;
         }
 
-        // Add Logout button for all roles
-        Button logoutButton = new Button("🚪 Logout");
-        logoutButton.setStyle("-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
-        logoutButton.setOnAction(this::logout);
-        sidebar.getChildren().add(logoutButton);
+        ObservableList<Customer> filteredCustomers = allCustomers.filtered(customer ->
+                (customer.getFirstName() != null && customer.getFirstName().toLowerCase().contains(searchText)) ||
+                        (customer.getLastName() != null && customer.getLastName().toLowerCase().contains(searchText)) ||
+                        (customer.getEmail() != null && customer.getEmail().toLowerCase().contains(searchText))
+        );
+
+        customerTable.setItems(filteredCustomers);
     }
 
-    private void addButton(String text, String fxmlFile) {
-        Button button = new Button(text);
-        button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
-        if (text.equals("👥 Search Customers")) {
-            button.setStyle("-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
+    @FXML
+    public void showUpdateForm() {
+        Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
+        if (selectedCustomer == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Please select a customer to update");
+            alert.showAndWait();
+            return;
         }
-        button.setOnAction(event -> {
-            try {
-                loadView(fxmlFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading view: " + e.getMessage());
-                alert.showAndWait();
-            }
-        });
-        sidebar.getChildren().add(button);
+
+        // Populate the form with the selected customer's details
+        updateCustomerIdField.setText(selectedCustomer.getCustomerId());
+        updateFirstNameField.setText(selectedCustomer.getFirstName());
+        updateLastNameField.setText(selectedCustomer.getLastName());
+        updatePhoneNumberField.setText(selectedCustomer.getPhoneNumber());
+        updateEmailField.setText(selectedCustomer.getEmail());
+        updateAddressField.setText(selectedCustomer.getAddress());
+
+        // Show the update form
+        updateForm.setVisible(true);
+        updateForm.setManaged(true);
     }
 
-    private void loadAllCustomers() {
+    @FXML
+    public void updateCustomer() {
         try {
-            customerTable.setItems(FXCollections.observableArrayList(customerService.getAllCustomers()));
+            String customerId = updateCustomerIdField.getText();
+            String firstName = updateFirstNameField.getText().trim();
+            String lastName = updateLastNameField.getText().trim();
+            String phoneNumber = updatePhoneNumberField.getText().trim();
+            String email = updateEmailField.getText().trim();
+            String address = updateAddressField.getText().trim();
+
+            // Validate required fields
+            if (firstName.isEmpty() || lastName.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || address.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Please fill in all required fields");
+                alert.showAndWait();
+                return;
+            }
+
+            // Update the customer
+            customerService.updateCustomer(customerId, firstName, lastName, phoneNumber, email, address);
+
+            // Refresh the table
+            loadCustomers();
+
+            // Hide the update form
+            updateForm.setVisible(false);
+            updateForm.setManaged(false);
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Customer updated successfully");
+            alert.showAndWait();
         } catch (Exception e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Error updating customer: " + e.getMessage());
+            alert.showAndWait();
         }
+    }
+
+    @FXML
+    public void cancelUpdate() {
+        // Hide the update form and clear fields
+        updateForm.setVisible(false);
+        updateForm.setManaged(false);
+        updateCustomerIdField.clear();
+        updateFirstNameField.clear();
+        updateLastNameField.clear();
+        updatePhoneNumberField.clear();
+        updateEmailField.clear();
+        updateAddressField.clear();
     }
 
     private void loadView(String fxmlFile) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/" + fxmlFile));
         Stage stage = (Stage) customerTable.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        Scene scene = new Scene(root, WindowConfig.DEFAULT_WINDOW_WIDTH, WindowConfig.DEFAULT_WINDOW_HEIGHT);
+        stage.setScene(scene);
+        stage.setTitle("Vehicle Maintenance System - " + fxmlFile.replace(".fxml", ""));
+
+        // Apply window size constraints
+        stage.setMinWidth(WindowConfig.MIN_WINDOW_WIDTH);
+        stage.setMinHeight(WindowConfig.MIN_WINDOW_HEIGHT);
+        stage.setMaxWidth(WindowConfig.MAX_WINDOW_WIDTH);
+        stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
     }
 
     @FXML
-    private void logout(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
-            Stage stage = (Stage) customerTable.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void logout() {
+        // Logout functionality is handled by SidebarUtil
     }
 }
