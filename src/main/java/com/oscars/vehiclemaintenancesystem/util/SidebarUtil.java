@@ -47,7 +47,7 @@ public class SidebarUtil {
                 addButton(sidebar, "🏠 Dashboard", "MechanicDashboard.fxml", stage);
                 addButton(sidebar, "📅 Appointments", "AppointmentHistoryView.fxml", stage);
                 addButton(sidebar, "🔧 Mechanic Availability", "MechanicAvailabilityView.fxml", stage);
-                addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
+//                addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
                 addButton(sidebar, "🔔 Notifications", "NotificationView.fxml", stage);
                 addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
                 addButton(sidebar, "📋 Vehicle Checklist", "VehicleChecklistView.fxml", stage);
@@ -61,7 +61,7 @@ public class SidebarUtil {
 //                addButton(sidebar, "💳 Payments", "PaymentView.fxml", stage);
                 addButton(sidebar, "💳 Payments", "PaymentHistoryView.fxml", stage);
                 addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
-                addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
+//                addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
                 addButton(sidebar, "📄 Invoice Generation", "InvoiceGenerationView.fxml", stage);
                 break;
         }
@@ -101,9 +101,9 @@ public class SidebarUtil {
      */
     private static void addButton(VBox sidebar, String text, String fxmlFile, Stage stage) {
         Button button = new Button(text);
-        button.setStyle("-fx-pref-width: 150; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
+        button.setStyle("-fx-pref-width: 200; -fx-background-color: #34495e; -fx-text-fill: white; -fx-font-size: 14;");
         if (text.equals("🏠 Dashboard")) {
-            button.setStyle("-fx-pref-width: 150; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
+            button.setStyle("-fx-pref-width: 200; -fx-background-color: #1abc9c; -fx-text-fill: white; -fx-font-size: 14;");
         }
         button.setOnAction(event -> {
             try {
