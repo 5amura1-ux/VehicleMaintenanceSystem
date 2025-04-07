@@ -1,6 +1,5 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
-import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Appointment;
 import com.oscars.vehiclemaintenancesystem.model.Payment;
 import com.oscars.vehiclemaintenancesystem.model.User;
@@ -18,7 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;

@@ -1,6 +1,5 @@
 package com.oscars.vehiclemaintenancesystem.controller;
 
-import antlr.ASTNULLType;
 import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Customer;
 import com.oscars.vehiclemaintenancesystem.model.Vehicle;
@@ -14,7 +13,6 @@ import com.oscars.vehiclemaintenancesystem.service.ServiceService;
 import com.oscars.vehiclemaintenancesystem.service.ServicePackageService;
 import com.oscars.vehiclemaintenancesystem.service.MechanicService;
 import com.oscars.vehiclemaintenancesystem.util.SidebarUtil;
-import com.oscars.vehiclemaintenancesystem.util.HibernateUtil;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -25,13 +23,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
 import java.io.IOException;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Types;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;

@@ -24,11 +24,10 @@ The Vehicle Maintenance System is designed to help vehicle owners, fleet manager
 
 - Java 21
 - Maven for dependency management
-- Spring Framework
-- SQL Database (MySQL/PostgreSQL)
-- Spring Data JPA for database interactions
-- Spring Security for authentication
-- Thymeleaf/JSP for view templates
+- Hibernate Framework
+- SQL Database (Oracle SQL)
+- Data JPA for database interactions
+- Security for authentication
 
 ## Getting Started
 
@@ -37,7 +36,7 @@ The Vehicle Maintenance System is designed to help vehicle owners, fleet manager
 - JDK 21 or higher
 - Maven 3.8.5 or higher
 - Your favorite IDE (IntelliJ IDEA recommended)
-- Database server (MySQL/PostgreSQL)
+- Database server (Oracle SQL)
 
 ### Installation
 

@@ -2,7 +2,6 @@ package com.oscars.vehiclemaintenancesystem.controller;
 
 import com.oscars.vehiclemaintenancesystem.config.WindowConfig;
 import com.oscars.vehiclemaintenancesystem.model.Appointment;
-import com.oscars.vehiclemaintenancesystem.model.User;
 import com.oscars.vehiclemaintenancesystem.service.AppointmentService;
 import com.oscars.vehiclemaintenancesystem.service.UserService;
 import javafx.collections.FXCollections;

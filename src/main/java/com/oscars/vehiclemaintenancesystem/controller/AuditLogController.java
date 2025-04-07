@@ -24,7 +24,7 @@ public class AuditLogController {
     @FXML private TableColumn<AuditLog, String> tableNameColumn;
     @FXML private TableColumn<AuditLog, String> actionColumn;
     @FXML private TableColumn<AuditLog, String> userIdColumn;
-    @FXML private TableColumn<AuditLog, String> userNameColumn; // New column for user name
+    @FXML private TableColumn<AuditLog, String> userNameColumn; // New column for username
     @FXML private TableColumn<AuditLog, String> detailsColumn;
     @FXML private TableColumn<AuditLog, java.util.Date> timestampColumn;
     @FXML private VBox sidebar;

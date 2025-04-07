@@ -11,7 +11,7 @@
     <center>
         <ScrollPane fitToWidth="true" style="-fx-background-color: #ecf0f1;">
             <VBox spacing="20" style="-fx-padding: 20; -fx-background-color: #ecf0f1;" alignment="TOP_CENTER">
-                <!-- Welcome Section -->
+                <!-- Welcome, Section -->
                 <VBox styleClass="card">
                     <Label fx:id="welcomeLabel" styleClass="card-title"/>
                 </VBox>

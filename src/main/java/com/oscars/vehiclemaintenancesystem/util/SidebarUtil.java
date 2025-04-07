@@ -37,8 +37,8 @@ public class SidebarUtil {
                 addButton(sidebar, "👤 Users", "UserProfileView.fxml", stage);
                 addButton(sidebar, "🔔 Notifications", "NotificationView.fxml", stage);
                 addButton(sidebar, "⚙️ Services", "ServiceManagementView.fxml", stage);
-                addButton(sidebar, "📦 Packages", "ServicePackageManagementView.fxml", stage);
-                addButton(sidebar, "🔧 Mechanic Availability", "MechanicAvailabilityView.fxml", stage);
+//                addButton(sidebar, "📦 Packages", "ServicePackageManagementView.fxml", stage);
+//                addButton(sidebar, "🔧 Mechanic Availability", "MechanicAvailabilityView.fxml", stage);
                 addButton(sidebar, "📜 Audit Log", "AuditLogView.fxml", stage);
 //                addButton(sidebar, "❗ Error Log", "ErrorLogView.fxml", stage);
 //                addButton(sidebar, "⚙️ System Settings", "SystemSettingsView.fxml", stage);

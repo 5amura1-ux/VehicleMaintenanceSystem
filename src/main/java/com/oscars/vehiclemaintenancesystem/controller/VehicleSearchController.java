@@ -18,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class VehicleSearchController {
     @FXML private TextField searchField;
