@@ -17,7 +17,6 @@
         <mapping class="com.oscars.vehiclemaintenancesystem.model.User"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Customer"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Vehicle"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.model.ServiceCategory"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Service"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.ServicePackage"/>
         <!-- <mapping class="com.oscars.vehiclemaintenancesystem.model.ServicePackageDetail"/> -->
@@ -25,9 +24,6 @@
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Payment"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.InventoryItem"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Role"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.model.Notification"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.model.AuditLog"/>
-        <mapping class="com.oscars.vehiclemaintenancesystem.model.ErrorLog"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Mechanic"/>
     </session-factory>
 </hibernate-configuration>

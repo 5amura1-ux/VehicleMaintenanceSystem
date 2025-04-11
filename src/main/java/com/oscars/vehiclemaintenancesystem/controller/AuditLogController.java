@@ -16,13 +16,15 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
-public class UserActivityLogController {
+public class AuditLogController {
     @FXML private TableView<AuditLog> auditLogTable;
     @FXML private TableColumn<AuditLog, String> logIdColumn;
     @FXML private TableColumn<AuditLog, String> tableNameColumn;
     @FXML private TableColumn<AuditLog, String> actionColumn;
     @FXML private TableColumn<AuditLog, String> userIdColumn;
+    @FXML private TableColumn<AuditLog, String> userNameColumn; // New column for username
     @FXML private TableColumn<AuditLog, String> detailsColumn;
     @FXML private TableColumn<AuditLog, java.util.Date> timestampColumn;
     @FXML private VBox sidebar;
@@ -36,36 +38,29 @@ public class UserActivityLogController {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins can access this view");
             alert.showAndWait();
             try {
-                String fxmlFile;
-                switch (LoginController.getLoggedInUserRole()) {
-                    case "ROLE00003":
-                        fxmlFile = "MechanicDashboard.fxml";
-                        break;
-                    case "ROLE00005":
-                        fxmlFile = "SalesRepDashboard.fxml";
-                        break;
-                    default:
-                        fxmlFile = "Login.fxml";
-                }
-                loadView(fxmlFile);
+                loadView("Dashboard.fxml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             return;
         }
 
-        // Set up table columns
+        // Set up the table columns
         logIdColumn.setCellValueFactory(new PropertyValueFactory<>("logId"));
         tableNameColumn.setCellValueFactory(new PropertyValueFactory<>("tableName"));
         actionColumn.setCellValueFactory(new PropertyValueFactory<>("action"));
         userIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+        userNameColumn.setCellValueFactory(new PropertyValueFactory<>("userName"));
         detailsColumn.setCellValueFactory(new PropertyValueFactory<>("details"));
         timestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+
+        // Ensure columns are visible
+        auditLogTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
         // Load audit logs
         loadAuditLogs();
 
-        // Populate the sidebar based on role
+        // Delay sidebar population until the Scene is fully constructed
         Platform.runLater(() -> {
             Stage stage = (Stage) sidebar.getScene().getWindow();
             SidebarUtil.populateSidebar(sidebar, LoginController.getLoggedInUserRole(), stage);
@@ -74,7 +69,8 @@ public class UserActivityLogController {
 
     private void loadAuditLogs() {
         try {
-            auditLogTable.setItems(FXCollections.observableArrayList(auditLogService.getAllAuditLogs()));
+            List<AuditLog> auditLogs = auditLogService.getAllAuditLogs();
+            auditLogTable.setItems(FXCollections.observableArrayList(auditLogs));
         } catch (Exception e) {
             e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR, "Error loading audit logs: " + e.getMessage());
@@ -96,12 +92,4 @@ public class UserActivityLogController {
         stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
     }
 
-    @FXML
-    public void logout() {
-        try {
-            loadView("Login.fxml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

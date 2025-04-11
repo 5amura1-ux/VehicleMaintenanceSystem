@@ -63,9 +63,7 @@ public class InventoryDAO {
         }
     }
 
-    public String addInventoryItem(String itemName, int quantity, int lowStockThreshold, double unitPrice) throws Exception {
-        return insertInventory(itemName, quantity, lowStockThreshold, unitPrice);
-    }
+
 
     public void updateInventoryItem(String itemId, int quantity) {
         Session session = HibernateUtil.getSessionFactory().openSession();

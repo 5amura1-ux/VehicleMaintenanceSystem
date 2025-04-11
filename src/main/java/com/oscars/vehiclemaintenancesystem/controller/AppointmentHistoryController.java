@@ -265,8 +265,4 @@ public class AppointmentHistoryController {
         }
     }
 
-    @FXML
-    private void logout() {
-        // Logout functionality is handled by SidebarUtil
-    }
 }

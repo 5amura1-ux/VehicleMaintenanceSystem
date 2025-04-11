@@ -230,8 +230,6 @@ public class SalesRepBookingController {
 
             customerResultLabel.setText("Customer added successfully with ID: " + customerId);
 
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Customer added successfully with ID: " + customerId);
-//            alert.showAndWait();
             customerFirstNameField.clear();
             customerLastNameField.clear();
             customerPhoneField.clear();
@@ -257,9 +255,6 @@ public class SalesRepBookingController {
             List<Vehicle> customerVehicles = vehicleService.getVehiclesByCustomer(selectedCustomer.getCustomerId());
             if (searchText.isEmpty()) {
                 System.out.println("Fetched vehicles for customer " + selectedCustomer.getCustomerId() + ": " + customerVehicles.size()); // Debug log
-//                for (Vehicle vehicle : customerVehicles) {
-//                    System.out.println("Vehicle: ID=" + vehicle.getVehicleId() + ", VIN=" + vehicle.getVin() + ", Make=" + vehicle.getMake() + ", Model=" + vehicle.getModel());
-//                }
                 vehicleTable.getItems().clear(); // Clear existing items
                 vehicleTable.setItems(FXCollections.observableArrayList(customerVehicles));
                 return;
@@ -327,8 +322,6 @@ public class SalesRepBookingController {
                     vehicleColorField.getText()
             );
 
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Vehicle added successfully with ID: " + vehicleId);
-//            alert.showAndWait();
             resultLabel.setText("Vehicle added successfully with ID: " + vehicleId);
             vehicleVinField.clear();
             vehicleMakeField.clear();

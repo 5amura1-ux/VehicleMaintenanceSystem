@@ -90,15 +90,4 @@ public class UserDAO {
             }
     }
 
-//    public User getUserByUsername(String username) {
-//        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-//            Transaction tx = session.beginTransaction();
-//            session.byId(User.class).load(username);
-//            tx.commit();
-//        }
-//        return user;
-//    }
-//
-//    public void updateUserProfile(String userId, String firstName, String lastName, String email, String newPassword) {
-//    }
 }

@@ -26,20 +26,4 @@ public class RoleDAO {
         }
     }
 
-    public void deleteRole(String roleId) throws Exception {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Transaction tx = session.beginTransaction();
-            Role role = session.get(Role.class, roleId);
-            if (role != null) {
-                session.delete(role);
-            }
-            tx.commit();
-        }
-    }
-
-    public List<Role> getAllRoles() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("FROM Role", Role.class).list();
-        }
-    }
 }

@@ -188,8 +188,4 @@ public class CustomerSearchController {
         stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
     }
 
-    @FXML
-    private void logout() {
-        // Logout functionality is handled by SidebarUtil
-    }
 }

@@ -125,12 +125,4 @@ public class UserService {
 
 
     // Add method to get a user by username
-//    public User getUserByUsername(String username) throws Exception {
-//        return userDAO.getUserByUsername(username);
-//    }
-//
-//    // Add method to update a user's profile
-//    public void updateUserProfile(String userId, String firstName, String lastName, String email, String newPassword) throws Exception {
-//        userDAO.updateUserProfile(userId, firstName, lastName, email, newPassword);
-//    }
 }
