@@ -70,6 +70,10 @@ public class AuditLogController {
     private void loadAuditLogs() {
         try {
             List<AuditLog> auditLogs = auditLogService.getAllAuditLogs();
+            System.out.println("Loaded " + auditLogs.size() + " audit logs");
+            for (AuditLog log : auditLogs) {
+                System.out.println("Audit Log: " + log.getLogId() + ", User: " + log.getUserId() + ", UserName: " + log.getUserName());
+            }
             auditLogTable.setItems(FXCollections.observableArrayList(auditLogs));
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,5 +95,4 @@ public class AuditLogController {
         stage.setMaxWidth(WindowConfig.MAX_WINDOW_WIDTH);
         stage.setMaxHeight(WindowConfig.MAX_WINDOW_HEIGHT);
     }
-
 }

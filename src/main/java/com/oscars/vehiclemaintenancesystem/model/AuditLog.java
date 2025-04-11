@@ -4,12 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Audit_Log")
-@NamedNativeQuery(
-        name = "AuditLog.findAllFromView",
-        query = "SELECT * FROM VW_AUDIT_LOG",
-        resultClass = AuditLog.class
-)
+@Table(name = "Audit_Log", schema = "OSCARS")
 public class AuditLog {
     @Id
     @Column(name = "log_id")

@@ -15,6 +15,7 @@
         <!-- Entity classes -->
         <property name="hibernate.archive.autodetection">class</property>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.User"/>
+        <mapping class="com.oscars.vehiclemaintenancesystem.model.AuditLog"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Customer"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Vehicle"/>
         <mapping class="com.oscars.vehiclemaintenancesystem.model.Service"/>
