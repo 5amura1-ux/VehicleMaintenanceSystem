@@ -43,7 +43,7 @@ public class InventoryController {
     public void initialize() {
         // Check role-based access (only Admins and SalesReps can access this view)
         String role = LoginController.getLoggedInUserRole();
-        if (!"ROLE00004".equals(role) && !"ROLE00005".equals(role)) {
+        if (!"ROLE00004".equals(role) && !"ROLE00005".equals(role) && !"ROLE00003".equals(role)) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Access Denied: Only Admins and Sales Representatives can access this view");
             alert.showAndWait();
             try {

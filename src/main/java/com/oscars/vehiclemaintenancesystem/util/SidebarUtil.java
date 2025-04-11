@@ -30,25 +30,16 @@ public class SidebarUtil {
                 addButton(sidebar, "👥 Customers", "CustomerSearchView.fxml", stage);
                 addButton(sidebar, "🚗 Vehicles", "VehicleSearchView.fxml", stage);
                 addButton(sidebar, "📅 Appointments", "AppointmentHistoryView.fxml", stage);
-//                addButton(sidebar, "💳 Payments", "PaymentView.fxml", stage);
-                addButton(sidebar, "💳 Payments", "PaymentHistoryView.fxml", stage);
                 addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
-//                addButton(sidebar, "📊 Inventory Report", "InventoryReportView.fxml", stage);
                 addButton(sidebar, "👤 Users", "UserProfileView.fxml", stage);
-                addButton(sidebar, "🔔 Notifications", "NotificationView.fxml", stage);
+                addButton(sidebar, "🎭 Roles", "RolesView.fxml", stage);
                 addButton(sidebar, "⚙️ Services", "ServiceManagementView.fxml", stage);
-//                addButton(sidebar, "📦 Packages", "ServicePackageManagementView.fxml", stage);
-//                addButton(sidebar, "🔧 Mechanic Availability", "MechanicAvailabilityView.fxml", stage);
                 addButton(sidebar, "📜 Audit Log", "AuditLogView.fxml", stage);
-//                addButton(sidebar, "❗ Error Log", "ErrorLogView.fxml", stage);
-//                addButton(sidebar, "⚙️ System Settings", "SystemSettingsView.fxml", stage);
+
                 break;
             case "ROLE00003": // Mechanic
                 addButton(sidebar, "🏠 Dashboard", "MechanicDashboard.fxml", stage);
                 addButton(sidebar, "📅 Appointments", "AppointmentHistoryView.fxml", stage);
-                addButton(sidebar, "🔧 Mechanic Availability", "MechanicAvailabilityView.fxml", stage);
-//                addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
-                addButton(sidebar, "🔔 Notifications", "NotificationView.fxml", stage);
                 addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
                 addButton(sidebar, "📋 Vehicle Checklist", "VehicleChecklistView.fxml", stage);
                 break;
@@ -58,17 +49,13 @@ public class SidebarUtil {
                 addButton(sidebar, "👥 Customers", "CustomerSearchView.fxml", stage);
                 addButton(sidebar, "🚗 Vehicles", "VehicleSearchView.fxml", stage);
                 addButton(sidebar, "📅 Appointments", "AppointmentHistoryView.fxml", stage);
-//                addButton(sidebar, "💳 Payments", "PaymentView.fxml", stage);
-                addButton(sidebar, "💳 Payments", "PaymentHistoryView.fxml", stage);
                 addButton(sidebar, "📦 Inventory", "InventoryView.fxml", stage);
-//                addButton(sidebar, "📝 Feedback", "CustomerFeedbackView.fxml", stage);
-                addButton(sidebar, "📄 Invoice Generation", "InvoiceGenerationView.fxml", stage);
                 break;
         }
 
         // Add Logout button for all roles
         Button logoutButton = new Button("🚪 Logout");
-        logoutButton.setStyle("-fx-pref-width: 150; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
+        logoutButton.setStyle("-fx-pref-width: 200; -fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 14;");
         logoutButton.setOnAction(event -> {
             try {
                 Parent root = FXMLLoader.load(SidebarUtil.class.getResource("/Login.fxml"));
